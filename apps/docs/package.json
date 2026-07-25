@@ -1,0 +1,15 @@
+{
+  "name": "@budget-calc/docs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Budget Calc documentation — architecture, API reference, and guides",
+  "scripts": {
+    "serve-docs": "node --watch serve.mjs",
+    "dev": "node --watch serve.mjs",
+    "build": "echo 'Docs are markdown — no build step'"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.6"
+  }
+}

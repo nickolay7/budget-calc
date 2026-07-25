@@ -1,0 +1,105 @@
+// Prisma schema — Budget Calc expense tracker
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum AccountType {
+  CASH
+  DEBIT_CARD
+  CREDIT_CARD
+  SAVINGS
+  ELECTRONIC
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password             String     // hashed
+  passwordResetToken   String?    // crypto.randomBytes token for password reset
+  passwordResetExpires DateTime?  // token expiration timestamp
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  accounts     Account[]
+  categories   Category[]
+  transactions Transaction[] @relation("TransactionPayer")
+  budgets      Budget[]
+}
+
+model Account {
+  id        String      @id @default(uuid())
+  name      String
+  type      AccountType
+  balance   Decimal     @default(0) @db.Decimal(12, 2)
+  currency  String      @default("USD")
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  outgoingTransactions Transaction[] @relation("SourceAccount")
+  incomingTransactions Transaction[] @relation("DestinationAccount")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  icon      String?  // emoji or icon name
+  color     String?  // hex color
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([name, userId])
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Decimal         @db.Decimal(12, 2)
+  type        TransactionType
+  description String?
+  date        DateTime        @default(now())
+  categoryId  String?
+  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  accountId   String
+  account     Account         @relation("SourceAccount", fields: [accountId], references: [id], onDelete: Cascade)
+  toAccountId String?         // for TRANSFER type
+  toAccount   Account?        @relation("DestinationAccount", fields: [toAccountId], references: [id])
+  userId      String
+  user        User            @relation("TransactionPayer", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Budget {
+  id         String   @id @default(uuid())
+  name       String
+  amount     Decimal  @db.Decimal(12, 2)
+  period     String   // "MONTHLY", "WEEKLY", "YEARLY"
+  startDate  DateTime @default(now())
+  endDate    DateTime?
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

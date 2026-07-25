@@ -1,0 +1,4 @@
+{
+  "name": "@budget-calc/eslint-config",
+  "main": "base.js"
+}

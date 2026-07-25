@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); if [ -n \"$branch\" ]; then dir=$(basename \"$PWD\"); echo \" $branch • $dir\"; else echo \"$(basename \"$PWD\")\"; fi",
+    "refreshInterval": 30
+  }
+}
