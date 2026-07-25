@@ -144,7 +144,37 @@ Raw TypeScript — no build step. Exports:
 - **constants/**: Enums (TRANSACTION_TYPES, ACCOUNT_TYPES, BUDGET_PERIODS), pagination defaults
 - **utils/**: formatCurrency, formatDate, getPeriodDates, calculateBudgetProgress
 
-### Patterns to follow
+## Commit conventions
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Type | When to use |
+|---|---|
+| `feat:` | New feature for the user or backend endpoint |
+| `fix:` | Bug fix |
+| `chore:` | Tooling, configs, dependencies, CI, project setup |
+| `docs:` | Documentation-only changes (README, CLAUDE.md, JSDoc) |
+| `refactor:` | Code change that neither fixes a bug nor adds a feature |
+| `style:` | Formatting, missing semicolons, lint fixes (no logic change) |
+| `test:` | Adding or correcting tests |
+| `perf:` | Performance improvement |
+
+**Format**: `<type>[(scope)]: <short summary>`
+
+- Scope is optional — use a noun like `api`, `web`, `shared`, `docs`, `docker`.
+- Summary starts lowercase, no period, imperative mood.
+- Separate body from subject with a blank line. Use body to explain *why*.
+- Footer `Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>` when Claude Code contributed.
+
+**Examples**:
+```
+feat(api): add category CRUD endpoints
+fix(web): handle empty transaction list gracefully
+chore: configure ESLint for monorepo
+docs: document auth flow in CLAUDE.md
+```
+
+## Patterns to follow
 
 - **Adding a new entity**: create Prisma model → NestJS module (controller+service+dto) → shared types + Zod schema → Next.js route + component
 - **DTOs** use `class-validator` decorators on the backend, `zod` schemas in shared (re-validate on frontend forms)
