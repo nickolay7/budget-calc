@@ -144,6 +144,22 @@ Raw TypeScript — no build step. Exports:
 - **constants/**: Enums (TRANSACTION_TYPES, ACCOUNT_TYPES, BUDGET_PERIODS), pagination defaults
 - **utils/**: formatCurrency, formatDate, getPeriodDates, calculateBudgetProgress
 
+## Branch workflow (GitHub Flow)
+
+We follow [GitHub Flow](https://guides.github.com/introduction/flow/):
+
+| Rule | Description |
+|---|---|
+| `main` is always deployable | Never commit broken or unfinished work directly to `main` |
+| Branch off `main` | Every feature, fix, or change gets its own branch from `main` |
+| Branch naming | Use conventional-commit prefixes: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`, `style/`, `test/`, `perf/` — e.g. `feat/main-screen`, `fix/login-error` |
+| Open a PR | Every branch → pull request into `main`, even for solo work |
+| PR description | Link to the task/issue, summarise what and why, note any manual testing done |
+| Merge via PR | Use **Squash and merge** for feature branches — keeps `main` history clean |
+| Delete after merge | Delete the feature branch immediately after merging |
+| Keep it short-lived | Feature branches should live hours or days, not weeks. Large features → break into smaller incremental PRs |
+| Rebase before PR | `git rebase main` before opening the PR to avoid conflicts |
+
 ## Commit conventions
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
@@ -185,3 +201,8 @@ docs: document auth flow in CLAUDE.md
 - **Zustand stores**: no providers needed — `create` from `zustand`, call `useXxxStore(selector)` directly in components
 - **Forms**: Zod schema via `.safeParse()` for validation, display errors per field
 - **New route page**: wrap `useSearchParams` in `<Suspense>` boundary
+
+## Voice Mode (voice-cc)
+     - Wrap your end-of-turn summary in `<say>...</say>` tags.
+     - Make the summary stand alone — no references to "this response".
+     - Aim for one sentence. Omit if no useful audio summary.

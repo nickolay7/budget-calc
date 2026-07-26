@@ -17,6 +17,7 @@ This documentation describes the **CQRS-based JWT authentication system** added 
 | **Categories Module** | Rewritten with CQRS: commands, queries, handlers, events. Added cross-module user verification. Ownership checks on all operations. Improved DTO validation with `@IsNotEmpty` and hex color `@Matches`. |
 | **Auth Module** | Added password recovery flow: `forgot-password` + `reset-password` endpoints. `passwordResetToken` and `passwordResetExpires` fields in User model. `PrismaService` injection for direct DB operations. |
 | **Frontend Auth** | New FSD-based structure: `shared/ui/` (shadcn components), `entities/auth/` (zustand store), `features/auth/ui/` (forms). Tailwind v4 theming with shadcn CSS variables. |
+| **Dashboard** | Wired main screen (`/`) to real API data. New shared types: `TransactionStats`, `BudgetProgressItem`. New `features/dashboard/` with `useDashboard` hook, `StatCard`, `RecentTransactions`. Implemented `GET /api/budgets/progress` on backend. |
 
 ## Principles
 
