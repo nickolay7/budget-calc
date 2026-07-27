@@ -26,6 +26,8 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
+      - run: npx prisma generate
+        working-directory: apps/api
       - run: npm run build
       - run: npm run lint
       - run: npx prisma validate
