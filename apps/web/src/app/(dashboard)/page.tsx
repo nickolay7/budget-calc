@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useAuthStore } from "@/entities/auth";
-import { useDashboard, formatChange, StatCard, RecentTransactions, BudgetProgressSection, DashboardSkeleton, DashboardError, DashboardEmpty } from "@/features/dashboard";
+import { useDashboard } from "@/features/dashboard/lib/useDashboard";
+import { formatChange } from "@/features/dashboard/lib/formatChange";
+import { StatCard } from "@/features/dashboard/ui/StatCard";
+import { RecentTransactions } from "@/features/dashboard/ui/RecentTransactions";
+import { BudgetProgressSection } from "@/features/dashboard/ui/BudgetProgressSection";
+import { DashboardSkeleton } from "@/features/dashboard/ui/DashboardSkeleton";
+import { DashboardError } from "@/features/dashboard/ui/DashboardError";
+import { DashboardEmpty } from "@/features/dashboard/ui/DashboardEmpty";
 import { formatCurrency } from "@budget-calc/shared";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";

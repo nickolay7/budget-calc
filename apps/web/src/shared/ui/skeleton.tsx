@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/shared/lib/cn";
 
 export function Skeleton({ className }: { className?: string }) {
