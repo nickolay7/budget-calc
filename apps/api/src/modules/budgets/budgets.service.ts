@@ -56,44 +56,61 @@ export class BudgetsService {
       include: { category: true },
     });
 
-    const now = new Date();
-    const results = await Promise.all(
-      budgets.map(async (budget) => {
-        const { start, end } = getPeriodDates(budget.period, now);
+    // Group budgets by period so we run at most 3 aggregate queries
+    // instead of one per budget (N+1 → ~4 total queries)
+    const byPeriod = new Map<string, typeof budgets>();
+    for (const b of budgets) {
+      const group = byPeriod.get(b.period) ?? [];
+      group.push(b);
+      byPeriod.set(b.period, group);
+    }
 
-        const agg = await this.prisma.transaction.aggregate({
+    const now = new Date();
+    const periodAggs = await Promise.all(
+      Array.from(byPeriod.entries()).map(async ([period, group]) => {
+        const { start, end } = getPeriodDates(period, now);
+        const categoryIds = group.map((b) => b.categoryId);
+
+        const rows = await this.prisma.transaction.groupBy({
+          by: ["categoryId"],
           where: {
             userId,
-            categoryId: budget.categoryId,
+            categoryId: { in: categoryIds },
             type: "EXPENSE",
             date: { gte: start, lte: end },
           },
           _sum: { amount: true },
         });
 
-        const spent = Number(agg._sum.amount ?? 0);
-        const budgetAmount = Number(budget.amount);
+        const spentByCategory = new Map(
+          rows.map((r) => [r.categoryId, Number(r._sum.amount ?? 0)]),
+        );
 
-        return {
-          budgetId: budget.id,
-          budgetName: budget.name,
-          budgetAmount,
-          spent,
-          remaining: Math.max(budgetAmount - spent, 0),
-          percentage:
-            budgetAmount > 0
-              ? Math.min(Math.round((spent / budgetAmount) * 100), 100)
-              : 0,
-          period: budget.period,
-          categoryId: budget.categoryId,
-          categoryName: budget.category.name,
-          categoryIcon: budget.category.icon,
-          categoryColor: budget.category.color,
-        };
+        return group.map((budget) => {
+          const spent = spentByCategory.get(budget.categoryId) ?? 0;
+          const budgetAmount = Number(budget.amount);
+
+          return {
+            budgetId: budget.id,
+            budgetName: budget.name,
+            budgetAmount,
+            spent,
+            remaining: Math.max(budgetAmount - spent, 0),
+            percentage:
+              budgetAmount > 0
+                ? Math.round((spent / budgetAmount) * 100)
+                : 0,
+            period: budget.period,
+            categoryId: budget.categoryId,
+            categoryName: budget.category.name,
+            categoryIcon: budget.category.icon,
+            categoryColor: budget.category.color,
+          };
+        });
       }),
     );
 
-    return results;
+    return periodAggs.flat();
   }
 
   create(_userId: string, _dto: unknown) {

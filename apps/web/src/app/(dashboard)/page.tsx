@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAuthStore } from "@/entities/auth";
-import { useDashboard, StatCard, RecentTransactions } from "@/features/dashboard";
+import { useDashboard, formatChange, StatCard, RecentTransactions, BudgetProgressSection, DashboardSkeleton, DashboardError, DashboardEmpty } from "@/features/dashboard";
 import { formatCurrency } from "@budget-calc/shared";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
@@ -20,199 +20,7 @@ import {
   PlusCircle,
   Receipt,
   Tags,
-  RefreshCw,
-  LayoutDashboard,
 } from "lucide-react";
-
-/* ── Sub-components ── */
-
-function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse rounded-md bg-muted", className)} />;
-}
-
-function DashboardSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="animate-slide-up space-y-2">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-4 w-48" />
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-8 w-8 rounded-lg" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="mb-2 h-7 w-28" />
-              <Skeleton className="h-3 w-20" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="animate-slide-up lg:col-span-2" style={{ animationDelay: "200ms" }}>
-          <CardHeader>
-            <Skeleton className="h-5 w-32" />
-          </CardHeader>
-          <CardContent className="space-y-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between rounded-lg px-3 py-2.5">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-8 w-8 rounded-full" />
-                  <div className="space-y-1.5">
-                    <Skeleton className="h-3.5 w-28" />
-                    <Skeleton className="h-3 w-20" />
-                  </div>
-                </div>
-                <Skeleton className="h-4 w-16" />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card className="animate-slide-up" style={{ animationDelay: "300ms" }}>
-          <CardHeader>
-            <Skeleton className="h-5 w-28" />
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="h-12 w-full rounded-lg" />
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-function DashboardError({ error, onRetry }: { error: string | null; onRetry: () => void }) {
-  return (
-    <div className="flex items-center justify-center py-20">
-      <Card className="w-full max-w-md">
-        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="mb-4 rounded-full bg-destructive/10 p-3">
-            <RefreshCw className="h-8 w-8 text-destructive" />
-          </div>
-          <h3 className="mb-2 text-lg font-semibold">Something went wrong</h3>
-          <p className="mb-1 text-sm text-muted-foreground">
-            We couldn&apos;t load your dashboard data.
-          </p>
-          {error && (
-            <p className="mb-4 max-w-sm text-xs text-muted-foreground/60">
-              {error}
-            </p>
-          )}
-          <Button variant="outline" className="gap-2" onClick={onRetry}>
-            <RefreshCw className="h-4 w-4" />
-            Try again
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function DashboardEmpty({ onRefresh }: { onRefresh?: () => void }) {
-  return (
-    <div className="flex items-center justify-center py-12">
-      <Card className="w-full max-w-lg">
-        <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="mb-4 rounded-full bg-brand/10 p-4">
-            <LayoutDashboard className="h-10 w-10 text-brand" />
-          </div>
-          <h3 className="mb-2 text-xl font-semibold">Welcome to Budget Calc!</h3>
-          <p className="mb-8 max-w-sm text-sm text-muted-foreground">
-            Your dashboard will show your financial overview once you add some
-            data. Start by creating your first transaction or account.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button asChild>
-              <Link href="/transactions/new">
-                <PlusCircle className="mr-1.5 h-4 w-4" />
-                New Transaction
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/accounts">
-                <Wallet className="mr-1.5 h-4 w-4" />
-                Add Account
-              </Link>
-            </Button>
-            {onRefresh && (
-              <Button variant="ghost" size="sm" onClick={onRefresh}>
-                <RefreshCw className="mr-1.5 h-4 w-4" />
-                Refresh
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function BudgetProgressSection({
-  budgets,
-}: {
-  budgets: Array<{
-    budgetId: string;
-    budgetName: string;
-    spent: number;
-    budgetAmount: number;
-    percentage: number;
-    categoryColor: string | null;
-  }>;
-}) {
-  return (
-    <Card className="animate-slide-up" style={{ animationDelay: "150ms" }}>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-base font-semibold">Budget Progress</CardTitle>
-        <Button variant="ghost" size="sm" className="gap-1 text-xs" asChild>
-          <Link href="/budgets">
-            View all
-            <TrendingUp className="h-3 w-3" />
-          </Link>
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {budgets.map((b) => {
-            const overBudget = b.percentage > 100;
-            const nearLimit = b.percentage >= 80 && b.percentage <= 100;
-            const barColor = overBudget
-              ? "bg-destructive"
-              : nearLimit
-                ? "bg-warning"
-                : (b.categoryColor ?? "bg-primary");
-
-            return (
-              <div key={b.budgetId} className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium">{b.budgetName}</span>
-                  <span
-                    className={cn(
-                      "tabular-nums text-xs",
-                      overBudget && "font-semibold text-destructive",
-                    )}
-                  >
-                    {formatCurrency(b.spent)} / {formatCurrency(b.budgetAmount)}
-                  </span>
-                </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                  <div
-                    className={cn("h-full rounded-full transition-all", barColor)}
-                    style={{ width: `${Math.min(b.percentage, 100)}%` }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 /* ── Quick Actions config ── */
 
@@ -279,14 +87,6 @@ function getGreeting(): string {
   return "Good evening";
 }
 
-function formatChange(value: number | null): { text: string | null; positive: boolean } {
-  if (value === null) return { text: null, positive: true };
-  return {
-    text: `${value >= 0 ? "+" : ""}${value.toFixed(1)}%`,
-    positive: value >= 0,
-  };
-}
-
 /* ── Page ── */
 
 export default function DashboardPage() {
@@ -300,8 +100,10 @@ export default function DashboardPage() {
     expenseChange,
     savingsRate,
     isLoading,
-    isError,
-    error,
+    allFailed,
+    statsError,
+    transactionsError,
+    budgetsError,
     isEmpty,
     refresh,
   } = useDashboard();
@@ -312,8 +114,8 @@ export default function DashboardPage() {
     return <DashboardSkeleton />;
   }
 
-  if (isError) {
-    return <DashboardError error={error} onRetry={refresh} />;
+  if (allFailed) {
+    return <DashboardError error={null} onRetry={refresh} />;
   }
 
   if (isEmpty) {
@@ -360,6 +162,7 @@ export default function DashboardPage() {
           icon={Wallet}
           iconColor="text-brand"
           iconBg="bg-brand/10"
+          isError={false}
           delay={0}
         />
         <StatCard
@@ -370,6 +173,7 @@ export default function DashboardPage() {
           icon={TrendingUp}
           iconColor="text-income"
           iconBg="bg-income/10"
+          isError={statsError}
           delay={100}
         />
         <StatCard
@@ -380,6 +184,7 @@ export default function DashboardPage() {
           icon={TrendingDown}
           iconColor="text-expense"
           iconBg="bg-expense/10"
+          isError={statsError}
           delay={200}
         />
         <StatCard
@@ -390,16 +195,19 @@ export default function DashboardPage() {
           icon={PiggyBank}
           iconColor="text-primary"
           iconBg="bg-primary/10"
+          isError={statsError}
           delay={300}
         />
       </div>
 
       {/* ── Budget Progress ── */}
-      {topBudgets.length > 0 && <BudgetProgressSection budgets={topBudgets} />}
+      {!budgetsError && topBudgets.length > 0 && (
+        <BudgetProgressSection budgets={topBudgets} />
+      )}
 
       {/* ── Recent Activity + Quick Actions ── */}
       <div className="grid gap-6 lg:grid-cols-3">
-        <RecentTransactions transactions={recentTransactions} onRetry={refresh} />
+        <RecentTransactions transactions={recentTransactions} isError={transactionsError} onRetry={refresh} />
         <QuickActionsCard />
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 
 interface StatCardProps {
@@ -13,15 +14,8 @@ interface StatCardProps {
   iconColor: string;
   iconBg: string;
   isLoading?: boolean;
+  isError?: boolean;
   delay?: number;
-}
-
-function Skeleton({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
-    />
-  );
 }
 
 export function StatCard({
@@ -33,6 +27,7 @@ export function StatCard({
   iconColor,
   iconBg,
   isLoading = false,
+  isError = false,
   delay = 0,
 }: StatCardProps) {
   if (isLoading) {
@@ -64,18 +59,31 @@ export function StatCard({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold tracking-tight">{value}</div>
+        <div
+          className={cn(
+            "text-2xl font-bold tracking-tight",
+            isError && "text-muted-foreground/50",
+          )}
+        >
+          {isError ? "—" : value}
+        </div>
         <p
           className={cn(
             "mt-1 text-xs",
-            change !== null
-              ? changePositive
-                ? "text-income"
-                : "text-expense"
-              : "text-muted-foreground",
+            isError
+              ? "text-muted-foreground/40"
+              : change !== null
+                ? changePositive
+                  ? "text-income"
+                  : "text-expense"
+                : "text-muted-foreground",
           )}
         >
-          {change !== null ? `${changePositive ? "+" : ""}${change} from last month` : "— from last month"}
+          {isError
+            ? "Unavailable"
+            : change !== null
+              ? `${changePositive ? "+" : ""}${change} from last month`
+              : "— from last month"}
         </p>
       </CardContent>
     </Card>

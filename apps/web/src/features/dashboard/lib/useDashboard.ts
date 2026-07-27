@@ -42,8 +42,10 @@ export interface UseDashboardReturn {
   expenseChange: number | null;
   savingsRate: number;
   isLoading: boolean;
-  isError: boolean;
-  error: string | null;
+  allFailed: boolean;
+  statsError: boolean;
+  transactionsError: boolean;
+  budgetsError: boolean;
   isEmpty: boolean;
   refresh: () => Promise<void>;
 }
@@ -59,8 +61,9 @@ export function useDashboard(): UseDashboardReturn {
     [],
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [statsError, setStatsError] = useState(false);
+  const [transactionsError, setTransactionsError] = useState(false);
+  const [budgetsError, setBudgetsError] = useState(false);
   const mounted = useRef(true);
 
   useEffect(() => {
@@ -69,18 +72,28 @@ export function useDashboard(): UseDashboardReturn {
 
   const fetchDashboard = useCallback(async () => {
     setIsLoading(true);
-    setIsError(false);
-    setError(null);
+    setStatsError(false);
+    setTransactionsError(false);
+    setBudgetsError(false);
     const now = new Date();
     const curr = getMonthRange(now);
     const prev = getPrevMonthRange(now);
 
+    const currParams = new URLSearchParams({
+      startDate: curr.start,
+      endDate: curr.end,
+    });
+    const prevParams = new URLSearchParams({
+      startDate: prev.start,
+      endDate: prev.end,
+    });
+
     const results = await Promise.allSettled([
       apiClient().get<TransactionStats>(
-        `/api/transactions/stats?startDate=${curr.start}&endDate=${curr.end}`,
+        `/api/transactions/stats?${currParams}`,
       ),
       apiClient().get<TransactionStats>(
-        `/api/transactions/stats?startDate=${prev.start}&endDate=${prev.end}`,
+        `/api/transactions/stats?${prevParams}`,
       ),
       apiClient().get<PaginatedResponse<TransactionWithRelations>>(
         "/api/transactions?limit=5",
@@ -91,17 +104,6 @@ export function useDashboard(): UseDashboardReturn {
 
     if (!mounted.current) return;
 
-    // Check for errors
-    const errors = results.filter((r) => r.status === "rejected");
-    if (errors.length > 0) {
-      const reasons = errors
-        .map((r) => (r as PromiseRejectedResult).reason?.message ?? "Unknown error")
-        .join("; ");
-      setError(reasons);
-      setIsError(true);
-    }
-
-    // Extract fulfilled results
     const [
       statsResult,
       prevStatsResult,
@@ -114,6 +116,7 @@ export function useDashboard(): UseDashboardReturn {
       setStats(statsResult.value);
     } else {
       setStats(null);
+      setStatsError(true);
     }
 
     if (prevStatsResult.status === "fulfilled") {
@@ -126,6 +129,7 @@ export function useDashboard(): UseDashboardReturn {
       setRecentTransactions(transactionsResult.value.data);
     } else {
       setRecentTransactions([]);
+      setTransactionsError(true);
     }
 
     if (accountsResult.status === "fulfilled") {
@@ -142,6 +146,7 @@ export function useDashboard(): UseDashboardReturn {
       setBudgetProgress(budgetResult.value);
     } else {
       setBudgetProgress([]);
+      setBudgetsError(true);
     }
 
     setIsLoading(false);
@@ -172,7 +177,8 @@ export function useDashboard(): UseDashboardReturn {
         )
       : 0;
 
-  const isEmpty = !isLoading && !isError && stats?.totalTransactions === 0 && totalBalance === 0;
+  const isEmpty = !isLoading && !statsError && !transactionsError && !budgetsError && stats?.totalTransactions === 0 && totalBalance === 0;
+  const allFailed = statsError && transactionsError && budgetsError;
 
   return {
     stats,
@@ -183,8 +189,10 @@ export function useDashboard(): UseDashboardReturn {
     expenseChange,
     savingsRate,
     isLoading,
-    isError,
-    error,
+    allFailed,
+    statsError,
+    transactionsError,
+    budgetsError,
     isEmpty,
     refresh: fetchDashboard,
   };

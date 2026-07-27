@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { formatCurrency } from "@budget-calc/shared";
 import { cn } from "@/shared/lib/cn";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -30,13 +31,13 @@ function SkeletonRow() {
   return (
     <div className="flex items-center justify-between rounded-lg px-3 py-2.5">
       <div className="flex items-center gap-3">
-        <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
+        <Skeleton className="h-8 w-8 rounded-full" />
         <div className="space-y-1.5">
-          <div className="h-3.5 w-28 animate-pulse rounded bg-muted" />
-          <div className="h-3 w-20 animate-pulse rounded bg-muted" />
+          <Skeleton className="h-3.5 w-28" />
+          <Skeleton className="h-3 w-20" />
         </div>
       </div>
-      <div className="h-4 w-16 animate-pulse rounded bg-muted" />
+      <Skeleton className="h-4 w-16" />
     </div>
   );
 }

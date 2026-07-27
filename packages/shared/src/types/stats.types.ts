@@ -29,7 +29,7 @@ export interface BudgetProgressItem {
   spent: number;
   remaining: number;
   percentage: number;
-  period: string;
+  period: "MONTHLY" | "WEEKLY" | "YEARLY";
   categoryId: string;
   categoryName: string;
   categoryIcon: string | null;

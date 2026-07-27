@@ -22,3 +22,12 @@ npm-debug.log*
 
 # Prisma
 apps/api/prisma/migrations/
+
+# TypeScript compilation artifacts emitted inline
+apps/api/src/**/*.{js,js.map,d.ts,d.ts.map}
+apps/api/prisma/seeds/**/*.{js,js.map,d.ts,d.ts.map}
+apps/api/test/**/*.{js,js.map,d.ts,d.ts.map}
+apps/web/src/**/*.{js,js.map,d.ts,d.ts.map}
+apps/web/next.config.*.{js,js.map,d.ts,d.ts.map}
+apps/web/next-env.d.ts
+packages/shared/src/**/*.{js,js.map,d.ts,d.ts.map}
