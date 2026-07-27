@@ -10,6 +10,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://budget_user:budget_pass@localhost:5432/budget_calc
+
     services:
       postgres:
         image: postgres:17-alpine
