@@ -4,29 +4,10 @@ import type {
   CreateTransactionDto,
   UpdateTransactionDto,
   TransactionQueryParams,
+  TransactionStats,
   PaginatedResponse,
 } from "@budget-calc/shared";
 import { apiClient } from "@/shared/api/api-client";
-
-interface TransactionStats {
-  totalIncome: number;
-  totalExpense: number;
-  netAmount: number;
-  totalTransactions: number;
-  byCategory: Array<{
-    categoryId: string | null;
-    categoryName: string;
-    categoryIcon: string | null;
-    total: number;
-    count: number;
-  }>;
-  byMonth: Array<{
-    month: string;
-    type: "INCOME" | "EXPENSE" | "TRANSFER";
-    total: number;
-    count: number;
-  }>;
-}
 
 interface TransactionsState {
   transactions: Transaction[];

@@ -4,6 +4,7 @@ export * from "./types/category.types";
 export * from "./types/budget.types";
 export * from "./types/account.types";
 export * from "./types/api.types";
+export * from "./types/stats.types";
 export * from "./validation/user.schema";
 export * from "./validation/transaction.schema";
 export * from "./validation/category.schema";

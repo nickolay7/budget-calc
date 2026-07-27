@@ -10,6 +10,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://budget_user:budget_pass@localhost:5432/budget_calc
+
     services:
       postgres:
         image: postgres:17-alpine
@@ -26,6 +29,8 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
+      - run: npx prisma generate
+        working-directory: apps/api
       - run: npm run build
       - run: npm run lint
       - run: npx prisma validate

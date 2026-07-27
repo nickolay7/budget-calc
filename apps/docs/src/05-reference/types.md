@@ -95,6 +95,52 @@ export class LoginDto {
 }
 ```
 
+## Dashboard/Stats Types
+
+```typescript
+// types/stats.types.ts — new
+
+export interface CategoryStat {
+  categoryId: string | null;
+  categoryName: string;
+  categoryIcon: string | null;
+  total: number;
+  count: number;
+}
+
+export interface MonthlyStat {
+  month: string;
+  type: "INCOME" | "EXPENSE" | "TRANSFER";
+  total: number;
+  count: number;
+}
+
+/** Returned by GET /api/transactions/stats */
+export interface TransactionStats {
+  totalIncome: number;
+  totalExpense: number;
+  netAmount: number;
+  totalTransactions: number;
+  byCategory: CategoryStat[];
+  byMonth: MonthlyStat[];
+}
+
+/** Returned by GET /api/budgets/progress */
+export interface BudgetProgressItem {
+  budgetId: string;
+  budgetName: string;
+  budgetAmount: number;
+  spent: number;
+  remaining: number;
+  percentage: number;
+  period: string;
+  categoryId: string;
+  categoryName: string;
+  categoryIcon: string | null;
+  categoryColor: string | null;
+}
+```
+
 ## Why Both Zod and class-validator?
 
 | Layer | Validation | Reason |

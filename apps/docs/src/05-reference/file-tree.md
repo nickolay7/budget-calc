@@ -136,6 +136,38 @@ packages/shared/src/
 └── validation/user.schema.ts         ← MODIFIED: +forgotPasswordSchema, +resetPasswordSchema
 ```
 
+## Dashboard (Real-Data Wiring)
+
+### New Files (5 files)
+
+```
+packages/shared/src/
+└── types/stats.types.ts                 ← NEW: TransactionStats, BudgetProgressItem, CategoryStat, MonthlyStat
+
+apps/web/src/features/dashboard/
+├── index.ts                             ← NEW: barrel export
+├── lib/
+│   └── useDashboard.ts                  ← NEW: hook, fetches stats + accounts + budgets + transactions
+└── ui/
+    ├── StatCard.tsx                     ← NEW: reusable stat card with skeleton loading
+    └── RecentTransactions.tsx           ← NEW: recent transactions list with loading/empty/error states
+```
+
+### Modified Files (3 files)
+
+```
+packages/shared/src/index.ts                 ← MODIFIED: +stats.types export
+
+apps/api/src/modules/budgets/
+└── budgets.service.ts                       ← MODIFIED: implemented getProgress (was stub)
+
+apps/web/src/entities/transactions/
+└── store.ts                                 ← MODIFIED: import TransactionStats from shared (was local)
+
+apps/web/src/app/(dashboard)/
+└── page.tsx                                 ← REWRITTEN: real data, loading/error/empty states, budget progress
+```
+
 ## Auth Frontend
 
 ### New Dependencies (8 packages)

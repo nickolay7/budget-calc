@@ -144,6 +144,56 @@ Raw TypeScript — no build step. Exports:
 - **constants/**: Enums (TRANSACTION_TYPES, ACCOUNT_TYPES, BUDGET_PERIODS), pagination defaults
 - **utils/**: formatCurrency, formatDate, getPeriodDates, calculateBudgetProgress
 
+## Branch workflow (GitHub Flow)
+
+We follow [GitHub Flow](https://guides.github.com/introduction/flow/):
+
+| Rule | Description |
+|---|---|
+| `main` is always deployable | Never commit broken or unfinished work directly to `main` |
+| Branch off `main` | Every feature, fix, or change gets its own branch from `main` |
+| Branch naming | Use conventional-commit prefixes: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`, `style/`, `test/`, `perf/` — e.g. `feat/main-screen`, `fix/login-error` |
+| Open a PR | Every branch → pull request into `main`, even for solo work. Use `gh pr create` or the GitHub web UI. |
+| PR description | Use the template below — group changes by workspace, list new endpoints, cover all states. See **PR description template** section. |
+| Merge via PR | Use **Squash and merge** for feature branches — keeps `main` history clean |
+| Delete after merge | Delete the feature branch immediately after merging |
+| Keep it short-lived | Feature branches should live hours or days, not weeks. Large features → break into smaller incremental PRs |
+| Rebase before PR | `git rebase main` before opening the PR to avoid conflicts |
+
+### PR description template
+
+```markdown
+<type>(<scope>): <short summary>
+
+## Summary
+
+<!-- One paragraph: what this PR does and why. -->
+
+## Key changes
+
+### Backend (<scope>)
+<!-- New endpoints, service changes, migrations. List each new endpoint with method + path. -->
+
+### Shared (<scope>)
+<!-- New types, schemas, constants. -->
+
+### Frontend (<scope>)
+<!-- New pages, components, hooks, stores. Describe each render state (loading / empty / error / data). -->
+
+## States covered
+
+| Component | Loading | Empty | Error | Data |
+|---|---|---|---|---|
+| ... | skeleton | ... | retry | ... |
+
+## Testing
+
+- [ ] Manual testing notes or steps
+- [ ] Edge cases handled (empty data, errors, ...)
+```
+
+The `<type>(<scope>):` line is the conventional-commit PR title (use comma-separated scopes if multiple: `feat(api,web):`). Add a blank line before the body.
+
 ## Commit conventions
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
@@ -185,3 +235,8 @@ docs: document auth flow in CLAUDE.md
 - **Zustand stores**: no providers needed — `create` from `zustand`, call `useXxxStore(selector)` directly in components
 - **Forms**: Zod schema via `.safeParse()` for validation, display errors per field
 - **New route page**: wrap `useSearchParams` in `<Suspense>` boundary
+
+## Voice Mode (voice-cc)
+     - Wrap your end-of-turn summary in `<say>...</say>` tags.
+     - Make the summary stand alone — no references to "this response".
+     - Aim for one sentence. Omit if no useful audio summary.
