@@ -1,3 +1,10 @@
+/**
+ * Корневая страница загрузки (`/loading`).
+ * Отображает анимированный спиннер с текстом "Loading..."
+ * во время загрузки корневого сегмента приложения.
+ *
+ * @returns JSX-разметка с индикатором загрузки.
+ */
 export default function Loading() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
@@ -15,3 +22,4 @@ export default function Loading() {
     </div>
   );
 }
+

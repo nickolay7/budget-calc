@@ -1,7 +1,17 @@
+/**
+ * Страница регистрации (`/register`).
+ * Рендерит форму регистрации `RegisterForm` на декоративном фоне
+ * с анимированными градиентными блоками.
+ */
 "use client";
 
 import { RegisterForm } from "@/features/auth/ui/RegisterForm";
 
+/**
+ * Страница регистрации нового пользователя.
+ *
+ * @returns JSX-разметка страницы регистрации.
+ */
 export default function RegisterPage() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-background via-primary/5 to-brand/10 p-4">

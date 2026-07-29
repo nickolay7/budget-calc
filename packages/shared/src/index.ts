@@ -1,3 +1,10 @@
+/**
+ * Пакет shared — общие типы, схемы валидации Zod, константы и утилиты
+ * для приложения Budget Calc. Импортируется клиентской и серверной частями.
+ *
+ * @module @budget-calc/shared
+ */
+
 export * from "./types/user.types";
 export * from "./types/transaction.types";
 export * from "./types/category.types";

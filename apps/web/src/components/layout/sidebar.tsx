@@ -25,6 +25,19 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
+/**
+ * Компонент боковой панели навигации.
+ *
+ * Отображает логотип, список навигационных пунктов (Dashboard, Transactions,
+ * Categories, Budgets, Accounts, Settings) с подсветкой активного пункта,
+ * информацию о текущем пользователе и кнопку выхода.
+ *
+ * Состояния рендеринга:
+ * - Пользователь авторизован: отображает имя, email и кнопку Logout.
+ * - Пользователь не авторизован: скрывает блок с информацией о пользователе.
+ *
+ * @returns JSX-разметка боковой панели.
+ */
 export function Sidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuthStore();

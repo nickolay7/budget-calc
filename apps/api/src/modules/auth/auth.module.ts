@@ -7,6 +7,12 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 
+/**
+ * Модуль аутентификации.
+ * Регистрирует PassportModule (JWT-стратегия), JwtModule для подписи токенов,
+ * AuthController и AuthService с JwtStrategy.
+ * Все маршруты контроллера помечены @Public() и не требуют авторизации.
+ */
 @Module({
   imports: [
     CqrsModule,

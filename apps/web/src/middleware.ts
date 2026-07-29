@@ -10,6 +10,20 @@ const publicRoutes = new Set([
   "/reset-password",
 ]);
 
+/**
+ * Middleware для защиты маршрутов (Edge Runtime).
+ *
+ * Проверяет наличие cookie budget_calc_token и перенаправляет
+ * неаутентифицированных пользователей на /login с сохранением
+ * исходного пути в параметре redirect. Аутентифицированных
+ * пользователей на страницах авторизации перенаправляет на /.
+ *
+ * Пропускает статические файлы, API-маршруты и внутренние
+ * пути Next.js.
+ *
+ * @param request - Входящий HTTP-запрос.
+ * @returns NextResponse с перенаправлением или продолжением.
+ */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 

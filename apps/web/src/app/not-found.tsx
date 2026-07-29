@@ -1,7 +1,17 @@
+/**
+ * Страница 404 — ресурс не найден (`/not-found`).
+ * Отображает иконку, заголовок "404", сообщение об отсутствии
+ * страницы и кнопку возврата на главную.
+ */
 import Link from "next/link";
 import { SearchX, Home } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 
+/**
+ * Компонент для отображения ошибки 404.
+ *
+ * @returns JSX-разметка страницы с сообщением о ненайденном ресурсе.
+ */
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background p-4">

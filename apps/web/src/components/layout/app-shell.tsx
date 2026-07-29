@@ -14,6 +14,17 @@ const pageTitles: Record<string, string> = {
   "/settings": "Settings",
 };
 
+/**
+ * Основная оболочка приложения.
+ *
+ * Отображает Sidebar слева и область контента с динамическим заголовком
+ * страницы, который определяется на основе текущего пути (usePathname).
+ *
+ * Состояния рендеринга: всегда показывает сайдбар + контент.
+ *
+ * @param children - Дочерние элементы, отображаемые в области контента.
+ * @returns JSX-разметка основной оболочки приложения.
+ */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 

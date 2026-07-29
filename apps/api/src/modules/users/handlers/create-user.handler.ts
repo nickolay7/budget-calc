@@ -3,13 +3,27 @@ import { CreateUserCommand } from "../commands/create-user.command";
 import { PrismaService } from "../../../prisma/prisma.service";
 import { UserCreatedEvent } from "../events/user-created.event";
 
+/**
+ * Обработчик команды создания пользователя.
+ * Создаёт запись пользователя в БД через Prisma и публикует событие UserCreatedEvent.
+ */
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
+  /**
+   * @param prisma - PrismaService для работы с БД
+   * @param eventBus - EventBus для публикации событий
+   */
   constructor(
     private readonly prisma: PrismaService,
     private readonly eventBus: EventBus,
   ) {}
 
+  /**
+   * Выполняет создание пользователя.
+   *
+   * @param command - Команда с email, name и passwordHash
+   * @returns Созданный пользователь (id, email, name, createdAt)
+   */
   async execute(command: CreateUserCommand) {
     const user = await this.prisma.user.create({
       data: {

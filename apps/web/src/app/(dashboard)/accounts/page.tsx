@@ -1,3 +1,8 @@
+/**
+ * Страница управления счетами (`/accounts`).
+ * Отображает заголовок, общую сумму баланса (капитал),
+ * и карточки каждого счёта с типом и остатком.
+ */
 "use client";
 
 import {
@@ -58,6 +63,12 @@ const accounts = [
   },
 ];
 
+/**
+ * Форматирует число как валюту (USD).
+ *
+ * @param amount - Сумма для форматирования.
+ * @returns Строка с отформатированной валютой (например, "$1,234.56").
+ */
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -65,6 +76,13 @@ function formatCurrency(amount: number) {
   }).format(amount);
 }
 
+/**
+ * Страница со списком финансовых счетов пользователя.
+ * Показывает общую сумму капитала и карточки каждого счёта
+ * с названием, типом, остатком и иконкой.
+ *
+ * @returns JSX-разметка страницы счетов.
+ */
 export default function AccountsPage() {
   const totalBalance = accounts.reduce(
     (sum, acc) => sum + acc.balance,

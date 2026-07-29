@@ -5,6 +5,10 @@ import {
   Matches,
 } from "class-validator";
 
+/**
+ * DTO для создания новой категории.
+ * Содержит название (обязательно), опциональные иконку и hex-цвет (например, #FF0000).
+ */
 export class CreateCategoryDto {
   @IsString({ message: "name must be a string" })
   @IsNotEmpty({ message: "name should not be empty" })

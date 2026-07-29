@@ -9,6 +9,17 @@ import type {
 } from "@budget-calc/shared";
 import { apiClient } from "@/shared/api/api-client";
 
+/**
+ * Интерфейс состояния транзакций.
+ *
+ * @property transactions - Список транзакций.
+ * @property currentTransaction - Текущая выбранная транзакция или null.
+ * @property stats - Статистика по транзакциям или null.
+ * @property isLoading - Флаг загрузки списка / одной транзакции.
+ * @property isStatsLoading - Флаг загрузки статистики.
+ * @property error - Текст ошибки или null.
+ * @property meta - Метаданные пагинации (total, page, totalPages).
+ */
 interface TransactionsState {
   transactions: Transaction[];
   currentTransaction: Transaction | null;
@@ -18,12 +29,19 @@ interface TransactionsState {
   error: string | null;
   meta: PaginatedResponse<Transaction>["meta"] | null;
 
+  /** Загружает список транзакций с фильтрацией и пагинацией. */
   fetchAll: (params?: TransactionQueryParams) => Promise<void>;
+  /** Загружает одну транзакцию по ID. */
   fetchOne: (id: string) => Promise<void>;
+  /** Создаёт новую транзакцию и обновляет список. */
   create: (dto: CreateTransactionDto) => Promise<Transaction>;
+  /** Обновляет существующую транзакцию и обновляет список. */
   update: (id: string, dto: UpdateTransactionDto) => Promise<Transaction>;
+  /** Удаляет транзакцию по ID и обновляет список. */
   remove: (id: string) => Promise<void>;
+  /** Загружает статистику по транзакциям. */
   fetchStats: (params?: TransactionQueryParams) => Promise<void>;
+  /** Очищает текст ошибки. */
   clearError: () => void;
 }
 

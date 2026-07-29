@@ -1,3 +1,8 @@
+/**
+ * Страница настроек профиля (`/settings`).
+ * Отображает секции: Профиль, Уведомления, Внешний вид и Безопасность
+ * с соответствующими полями и значениями.
+ */
 "use client";
 
 import {
@@ -57,6 +62,11 @@ const sections = [
   },
 ];
 
+/**
+ * Страница настроек аккаунта и приложения.
+ *
+ * @returns JSX-разметка страницы настроек.
+ */
 export default function SettingsPage() {
   return (
     <div className="animate-fade-in space-y-6">

@@ -2,16 +2,29 @@ import { create } from "zustand";
 import type { UserProfile } from "@budget-calc/shared";
 import { apiClient, publicClient, setTokens, clearTokens, getAccessToken } from "@/shared/api/api-client";
 
+/**
+ * Интерфейс состояния аутентификации.
+ *
+ * @property user - Данные текущего пользователя или null.
+ * @property isAuthenticated - Флаг авторизации пользователя.
+ * @property isLoading - Флаг загрузки (вход, проверка токена).
+ * @property error - Текст ошибки или null.
+ */
 interface AuthState {
   user: UserProfile | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 
+  /** Выполняет вход пользователя по email и паролю. */
   login: (email: string, password: string) => Promise<void>;
+  /** Регистрирует нового пользователя. */
   register: (email: string, name: string, password: string) => Promise<void>;
+  /** Выполняет выход: очищает токены и сбрасывает состояние. */
   logout: () => void;
+  /** Проверяет валидность токена и загружает профиль пользователя. */
   checkAuth: () => Promise<void>;
+  /** Очищает текст ошибки. */
   clearError: () => void;
 }
 

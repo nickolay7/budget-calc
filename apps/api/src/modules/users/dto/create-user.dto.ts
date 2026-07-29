@@ -1,5 +1,9 @@
 import { IsEmail, IsString, MinLength } from "class-validator";
 
+/**
+ * DTO для создания пользователя (используется внутри сервиса аутентификации).
+ * Содержит email, имя и пароль (минимум 6 символов).
+ */
 export class CreateUserDto {
   @IsEmail()
   email!: string;

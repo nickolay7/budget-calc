@@ -5,6 +5,10 @@ import {
   Matches,
 } from "class-validator";
 
+/**
+ * DTO для обновления категории.
+ * Все поля опциональны — обновляются только переданные значения.
+ */
 export class UpdateCategoryDto {
   @IsOptional()
   @IsString({ message: "name must be a string" })

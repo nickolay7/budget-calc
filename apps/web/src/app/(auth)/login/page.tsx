@@ -1,8 +1,19 @@
+/**
+ * Страница входа (`/login`).
+ * Рендерит декоративный фон с анимированными блоками и брендовой информацией
+ * слева, а справа — форму входа `LoginForm`.
+ */
 "use client";
 
 import { LoginForm } from "@/features/auth/ui/LoginForm";
 import { Wallet } from "lucide-react";
 
+/**
+ * Страница входа в приложение.
+ * Делится на две колонки: визуальный блок с брендом и панель с формой логина.
+ *
+ * @returns JSX-разметка страницы входа.
+ */
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen">

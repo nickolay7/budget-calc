@@ -7,6 +7,10 @@ import {
 } from "class-validator";
 import { TransactionType } from "@prisma/client";
 
+/**
+ * DTO для создания новой транзакции.
+ * Содержит сумму, тип, ID счёта и опциональные описание, дату, категорию и целевой счёт.
+ */
 export class CreateTransactionDto {
   @IsNumber()
   amount!: number;

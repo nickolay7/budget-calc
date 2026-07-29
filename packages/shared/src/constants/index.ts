@@ -1,3 +1,9 @@
+/**
+ * Константы приложения Budget Calc.
+ * Содержит допустимые значения для типов транзакций, типов счетов,
+ * периодов бюджета, валюты по умолчанию и настройки пагинации.
+ */
+
 export const TRANSACTION_TYPES = ["INCOME", "EXPENSE", "TRANSFER"] as const;
 export const ACCOUNT_TYPES = [
   "CASH",

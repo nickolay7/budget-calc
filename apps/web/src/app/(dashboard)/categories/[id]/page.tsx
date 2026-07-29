@@ -1,3 +1,8 @@
+/**
+ * Страница деталей категории (`/categories/[id]`).
+ * Асинхронный серверный компонент, который получает ID категории
+ * из параметров маршрута и отображает основную информацию о ней.
+ */
 import { Tags, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
@@ -9,6 +14,12 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 
+/**
+ * Страница с детальной информацией о категории.
+ *
+ * @param params - Объект с параметрами маршрута, содержащий `id` категории.
+ * @returns JSX-разметка с деталями категории.
+ */
 export default async function CategoryDetailPage({
   params,
 }: {

@@ -1,5 +1,9 @@
 import { IsString, IsNumber, IsOptional, IsDateString } from "class-validator";
 
+/**
+ * DTO для создания нового бюджета.
+ * Содержит название, сумму, период, ID категории и опциональные даты начала/окончания.
+ */
 export class CreateBudgetDto {
   @IsString()
   name!: string;

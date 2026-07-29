@@ -5,16 +5,33 @@ import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
 import { QueryTransactionDto } from "./dto/query-transaction.dto";
 
+/**
+ * Сервис для работы с транзакциями пользователя.
+ * Предоставляет методы CRUD и агрегированной статистики.
+ * При создании, обновлении и удалении транзакций автоматически корректирует
+ * балансы связанных счетов в транзакциях БД.
+ */
 @Injectable()
 export class TransactionsService {
+  /**
+   * @param prisma - PrismaService для работы с БД
+   */
   constructor(private prisma: PrismaService) {}
 
+  /** Стандартный набор включений для связанных данных транзакции. */
   private readonly include = {
     category: true,
     account: true,
     toAccount: true,
   };
 
+  /**
+   * Возвращает список транзакций пользователя с фильтрацией и пагинацией.
+   *
+   * @param userId - ID пользователя
+   * @param query - Параметры фильтрации (startDate, endDate, categoryId, accountId, type) и пагинации (page, limit)
+   * @returns Объект с массивами data и мета-информацией meta
+   */
   async findAll(userId: string, query: QueryTransactionDto) {
     const { startDate, endDate, categoryId, accountId, type, page, limit } =
       query;
@@ -62,6 +79,14 @@ export class TransactionsService {
     };
   }
 
+  /**
+   * Возвращает транзакцию по ID с проверкой принадлежности пользователю.
+   *
+   * @param id - ID транзакции
+   * @param userId - ID пользователя для проверки владения
+   * @returns Объект транзакции с включением связанных данных
+   * @throws NotFoundException если транзакция не найдена или не принадлежит пользователю
+   */
   async findOne(id: string, userId: string) {
     const transaction = await this.prisma.transaction.findUnique({
       where: { id },
@@ -75,6 +100,15 @@ export class TransactionsService {
     return transaction;
   }
 
+  /**
+   * Создаёт новую транзакцию и обновляет балансы счетов в одной транзакции БД.
+   * Для INCOME увеличивает баланс счёта, для EXPENSE уменьшает,
+   * для TRANSFER уменьшает баланс источника и увеличивает баланс назначения.
+   *
+   * @param userId - ID пользователя
+   * @param dto - Данные транзакции
+   * @returns Созданная транзакция с включением связанных данных
+   */
   async create(userId: string, dto: CreateTransactionDto) {
     const { accountId, toAccountId, amount, type, date, ...rest } = dto;
 
@@ -127,6 +161,17 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Обновляет существующую транзакцию.
+   * Если изменились сумма, тип или счёт — отменяет старые балансовые эффекты
+   * и применяет новые в одной транзакции БД.
+   *
+   * @param id - ID транзакции
+   * @param userId - ID пользователя для проверки владения
+   * @param dto - Данные для обновления
+   * @returns Обновлённая транзакция с включением связанных данных
+   * @throws NotFoundException если транзакция не найдена
+   */
   async update(id: string, userId: string, dto: UpdateTransactionDto) {
     // Verify ownership
     const existing = await this.prisma.transaction.findUnique({
@@ -193,6 +238,13 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Удаляет транзакцию и отменяет её влияние на балансы счетов.
+   *
+   * @param id - ID транзакции
+   * @param userId - ID пользователя для проверки владения
+   * @throws NotFoundException если транзакция не найдена
+   */
   async remove(id: string, userId: string) {
     // Verify ownership
     const existing = await this.prisma.transaction.findUnique({
@@ -217,6 +269,15 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Возвращает агрегированную статистику по транзакциям пользователя.
+   * Включает общие суммы доходов и расходов, группировку по категориям
+   * и группировку по месяцам (через сырой SQL-запрос).
+   *
+   * @param userId - ID пользователя
+   * @param query - Параметры фильтрации (startDate, endDate, categoryId, accountId, type)
+   * @returns Объект со статистикой
+   */
   async getStats(userId: string, query: QueryTransactionDto) {
     const { startDate, endDate, categoryId, accountId, type } = query;
 
@@ -332,6 +393,16 @@ export class TransactionsService {
 
   // --- Private helpers ---
 
+  /**
+   * Отменяет влияние транзакции на балансы счетов (обратное действие).
+   * Используется при обновлении и удалении транзакции.
+   *
+   * @param tx - Prisma-клиент для работы в транзакции БД
+   * @param type - Тип транзакции
+   * @param amount - Сумма транзакции
+   * @param accountId - ID счёта
+   * @param toAccountId - ID целевого счёта (для TRANSFER)
+   */
   private async reverseBalanceEffect(
     tx: Prisma.TransactionClient,
     type: TransactionType,
@@ -369,6 +440,16 @@ export class TransactionsService {
     }
   }
 
+  /**
+   * Применяет влияние транзакции на балансы счетов.
+   * Используется при создании и обновлении транзакции.
+   *
+   * @param tx - Prisma-клиент для работы в транзакции БД
+   * @param type - Тип транзакции
+   * @param amount - Сумма транзакции
+   * @param accountId - ID счёта
+   * @param toAccountId - ID целевого счёта (для TRANSFER)
+   */
   private async applyBalanceEffect(
     tx: Prisma.TransactionClient,
     type: TransactionType,

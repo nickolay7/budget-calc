@@ -1,7 +1,18 @@
 import { z } from "zod";
 
+/**
+ * Схемы валидации Zod для транзакций.
+ * Включает enum типов транзакций и схемы для создания/обновления.
+ */
+
+/** Enum типов транзакций для валидации */
 export const transactionTypeEnum = z.enum(["INCOME", "EXPENSE", "TRANSFER"]);
 
+/**
+ * Схема валидации создания новой транзакции.
+ * Требует положительную сумму, тип, идентификатор счёта.
+ * Опционально: описание, дата, категория, счёт назначения.
+ */
 export const createTransactionSchema = z.object({
   amount: z.number().positive(),
   type: transactionTypeEnum,
@@ -12,6 +23,10 @@ export const createTransactionSchema = z.object({
   toAccountId: z.string().uuid().optional(),
 });
 
+/**
+ * Схема валидации обновления существующей транзакции.
+ * Все поля опциональны.
+ */
 export const updateTransactionSchema = z.object({
   amount: z.number().positive().optional(),
   type: transactionTypeEnum.optional(),

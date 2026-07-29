@@ -1,3 +1,9 @@
+/**
+ * Страница управления категориями (`/categories`).
+ * Отображает заголовок с кнопкой добавления, сетку категорий
+ * с цветовыми индикаторами и количеством транзакций, а также
+ * пустое состояние, когда категории отсутствуют.
+ */
 "use client";
 
 import Link from "next/link";
@@ -23,6 +29,11 @@ const categoryColors = [
   { name: "Other", color: "bg-gray-500", count: 3 },
 ];
 
+/**
+ * Страница со списком категорий транзакций.
+ *
+ * @returns JSX-разметка страницы категорий.
+ */
 export default function CategoriesPage() {
   return (
     <div className="animate-fade-in space-y-6">

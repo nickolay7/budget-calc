@@ -1,3 +1,9 @@
+/**
+ * Страница списка транзакций (`/transactions`).
+ * Содержит заголовок с кнопкой создания новой транзакции
+ * и компонент `TransactionList` для отображения и фильтрации
+ * всех доходов и расходов.
+ */
 "use client";
 
 import { ArrowRightLeft, Plus } from "lucide-react";
@@ -5,6 +11,11 @@ import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { TransactionList } from "@/features/transactions/ui/TransactionList";
 
+/**
+ * Страница со списком всех транзакций пользователя.
+ *
+ * @returns JSX-разметка страницы транзакций.
+ */
 export default function TransactionsPage() {
   return (
     <div className="animate-fade-in space-y-6">

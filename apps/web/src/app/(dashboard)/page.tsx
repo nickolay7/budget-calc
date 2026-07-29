@@ -1,3 +1,9 @@
+/**
+ * Главная страница панели управления (`/`).
+ * Отображает приветствие, сетку статистики (баланс, доходы, расходы,
+ * норма сбережений), прогресс по бюджетам, последние транзакции и
+ * панель быстрых действий.
+ */
 "use client";
 
 import Link from "next/link";
@@ -55,6 +61,12 @@ const quickActions = [
   },
 ];
 
+/**
+ * Карточка с кнопками быстрых действий: создание транзакции,
+ * просмотр отчётов и управление бюджетами.
+ *
+ * @returns JSX-разметка карточки быстрых действий.
+ */
 function QuickActionsCard() {
   return (
     <Card className="animate-slide-up" style={{ animationDelay: "300ms" }}>
@@ -87,6 +99,12 @@ function QuickActionsCard() {
 
 /* ── Helpers ── */
 
+/**
+ * Определяет приветствие в зависимости от текущего часа.
+ *
+ * @returns Строку приветствия на английском: "Good morning", "Good afternoon"
+ * или "Good evening".
+ */
 function getGreeting(): string {
   const hour = new Date().getHours();
   if (hour < 12) return "Good morning";
@@ -96,6 +114,14 @@ function getGreeting(): string {
 
 /* ── Page ── */
 
+/**
+ * Главная страница панели управления.
+ * Рендерит приветствие с именем пользователя, сетку из четырёх
+ * статистических карточек, таблицу последних транзакций и блок
+ * быстрых действий.
+ *
+ * @returns JSX-разметка панели управления.
+ */
 export default function DashboardPage() {
   const { user } = useAuthStore();
   const {

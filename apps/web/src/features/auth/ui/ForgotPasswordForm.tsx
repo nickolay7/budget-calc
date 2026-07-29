@@ -16,6 +16,20 @@ import {
   CardFooter,
 } from "@/shared/ui/card";
 
+/**
+ * Форма восстановления пароля.
+ *
+ * Принимает email, отправляет запрос на сброс пароля.
+ *
+ * Состояния рендеринга:
+ * - Ввод данных: форма с полем email.
+ * - Загрузка: кнопка "Sending..." отключена.
+ * - Ошибка валидации: сообщение под полем email.
+ * - Ошибка API: баннер с сообщением.
+ * - Успех: карточка "Check Your Email" с ссылкой назад.
+ *
+ * @returns JSX-разметка формы восстановления пароля.
+ */
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [fieldError, setFieldError] = useState("");

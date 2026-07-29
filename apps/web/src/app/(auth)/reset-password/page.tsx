@@ -1,9 +1,21 @@
+/**
+ * Страница сброса пароля (`/reset-password`).
+ * Оборачивает контент сброса пароля в `<Suspense>` для поддержки
+ * `useSearchParams`, который читает токен сброса из URL.
+ */
 "use client";
 
 import { Suspense } from "react";
 import { ResetPasswordForm } from "@/features/auth/ui/ResetPasswordForm";
 import { ShieldCheck } from "lucide-react";
 
+/**
+ * Основное содержимое страницы сброса пароля.
+ * Рендерит форму `ResetPasswordForm` на декоративном фоне с логотипом.
+ * Вынесена в отдельный компонент для оборачивания в `<Suspense>`.
+ *
+ * @returns JSX-разметка с формой сброса пароля.
+ */
 function ResetPasswordContent() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-background via-primary/5 to-brand/10 p-4">
@@ -42,6 +54,12 @@ function ResetPasswordContent() {
   );
 }
 
+/**
+ * Страница сброса пароля, обёрнутая в `<Suspense>`.
+ * Загружает `ResetPasswordContent` или отображает спиннер.
+ *
+ * @returns JSX-разметка с Suspense-обёрткой.
+ */
 export default function ResetPasswordPage() {
   return (
     <Suspense

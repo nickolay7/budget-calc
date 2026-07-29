@@ -1,7 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
-/* Inlined from @budget-calc/shared — avoids Node.js .ts resolution issue */
+/**
+ * Встроенная копия утилиты из @budget-calc/shared — избегает проблем
+ * с разрешением .ts-файлов в среде выполнения Node.js.
+ * Возвращает даты начала и конца периода относительно указанной даты.
+ *
+ * @param period - Тип периода: "MONTHLY", "WEEKLY", "YEARLY"
+ * @param reference - Опорная дата (по умолчанию текущая)
+ * @returns Объект с полями start и end
+ */
 function getPeriodDates(period: string, reference?: Date) {
   const now = reference ?? new Date();
   const year = now.getFullYear();
@@ -31,10 +39,24 @@ function getPeriodDates(period: string, reference?: Date) {
   }
 }
 
+/**
+ * Сервис для работы с бюджетами пользователя.
+ * Предоставляет методы CRUD и расчёт прогресса (фактические расходы vs бюджет).
+ */
 @Injectable()
 export class BudgetsService {
+  /**
+   * @param prisma - PrismaService для работы с БД
+   */
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * Возвращает все бюджеты пользователя с включением категории,
+   * отсортированные по дате создания (сначала новые).
+   *
+   * @param userId - ID пользователя
+   * @returns Массив бюджетов с категориями
+   */
   findAll(userId: string) {
     return this.prisma.budget.findMany({
       where: { userId },
@@ -43,6 +65,12 @@ export class BudgetsService {
     });
   }
 
+  /**
+   * Возвращает бюджет по ID с включением категории.
+   *
+   * @param id - ID бюджета
+   * @returns Объект бюджета с категорией или null
+   */
   findOne(id: string) {
     return this.prisma.budget.findUnique({
       where: { id },
@@ -50,6 +78,14 @@ export class BudgetsService {
     });
   }
 
+  /**
+   * Рассчитывает прогресс по всем бюджетам пользователя.
+   * Группирует бюджеты по периодам для минимизации запросов к БД,
+   * вычисляет сумму расходов по каждой категории за соответствующий период.
+   *
+   * @param userId - ID пользователя
+   * @returns Массив объектов с прогрессом по каждому бюджету
+   */
   async getProgress(userId: string) {
     const budgets = await this.prisma.budget.findMany({
       where: { userId },
@@ -113,16 +149,36 @@ export class BudgetsService {
     return periodAggs.flat();
   }
 
+  /**
+   * Создаёт новый бюджет (заглушка — TODO).
+   *
+   * @param _userId - ID пользователя (не используется)
+   * @param _dto - Данные нового бюджета (не используются)
+   * @returns Сообщение о создании
+   */
   create(_userId: string, _dto: unknown) {
     // TODO: implement
     return { message: "created" };
   }
 
+  /**
+   * Обновляет существующий бюджет (заглушка — TODO).
+   *
+   * @param _id - ID бюджета (не используется)
+   * @param _dto - Данные для обновления (не используются)
+   * @returns Сообщение об обновлении
+   */
   update(_id: string, _dto: unknown) {
     // TODO: implement
     return { message: "updated" };
   }
 
+  /**
+   * Удаляет бюджет по ID.
+   *
+   * @param id - ID бюджета
+   * @returns Удалённый объект бюджета
+   */
   remove(id: string) {
     return this.prisma.budget.delete({ where: { id } });
   }

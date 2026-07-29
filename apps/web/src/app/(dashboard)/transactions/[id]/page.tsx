@@ -1,3 +1,9 @@
+/**
+ * Страница деталей транзакции (`/transactions/[id]`).
+ * Загружает данные транзакции по ID и отображает состояние
+ * загрузки, ошибки, "не найдено" или полную информацию
+ * в компоненте `TransactionDetail`.
+ */
 "use client";
 
 import { useEffect } from "react";
@@ -14,6 +20,12 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 
+/**
+ * Страница с детальной информацией о транзакции.
+ * Обрабатывает четыре состояния: загрузка, ошибка, не найдено, данные.
+ *
+ * @returns JSX-разметка с деталями транзакции или соответствующим fallback.
+ */
 export default function TransactionDetailPage() {
   const params = useParams();
   const router = useRouter();

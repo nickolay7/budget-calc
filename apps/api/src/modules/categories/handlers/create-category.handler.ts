@@ -5,14 +5,30 @@ import { CategoryCreatedEvent } from "../events/category-created.event";
 import { GetUserByIdQuery } from "../../users/queries/get-user-by-id.query";
 import { PrismaService } from "../../../prisma/prisma.service";
 
+/**
+ * Обработчик команды создания категории.
+ * Проверяет существование пользователя, создаёт категорию и публикует CategoryCreatedEvent.
+ */
 @CommandHandler(CreateCategoryCommand)
 export class CreateCategoryHandler implements ICommandHandler<CreateCategoryCommand> {
+  /**
+   * @param prisma - PrismaService для работы с БД
+   * @param eventBus - EventBus для публикации событий
+   * @param queryBus - QueryBus для проверки существования пользователя
+   */
   constructor(
     private readonly prisma: PrismaService,
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
   ) {}
 
+  /**
+   * Выполняет создание категории.
+   *
+   * @param command - Команда с userId, name, опционально icon и color
+   * @returns Созданная категория
+   * @throws NotFoundException если пользователь не найден
+   */
   async execute(command: CreateCategoryCommand) {
     const user = await this.queryBus.execute(new GetUserByIdQuery(command.userId));
 

@@ -1,6 +1,10 @@
 import { IsOptional, IsString, IsNumber, IsEnum, IsDateString } from "class-validator";
 import { TransactionType } from "@prisma/client";
 
+/**
+ * DTO для обновления транзакции.
+ * Все поля опциональны — обновляются только переданные значения.
+ */
 export class UpdateTransactionDto {
   @IsOptional()
   @IsNumber()

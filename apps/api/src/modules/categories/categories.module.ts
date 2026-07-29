@@ -7,6 +7,11 @@ import { CreateCategoryHandler } from "./handlers/create-category.handler";
 import { UpdateCategoryHandler } from "./handlers/update-category.handler";
 import { DeleteCategoryHandler } from "./handlers/delete-category.handler";
 
+/**
+ * Модуль категорий (CQRS).
+ * Регистрирует CategoriesController и все обработчики команд/запросов
+ * для управления категориями расходов и доходов.
+ */
 @Module({
   imports: [CqrsModule],
   controllers: [CategoriesController],

@@ -11,6 +11,12 @@ import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { BudgetsModule } from "./modules/budgets/budgets.module";
 import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
 
+/**
+ * Корневой модуль приложения.
+ * Импортирует все функциональные модули (Auth, Users, Accounts, Categories,
+ * Transactions, Budgets), CqrsModule, ConfigModule, PrismaModule.
+ * Регистрирует JwtAuthGuard как глобальный Guard.
+ */
 @Module({
   imports: [
     CqrsModule.forRoot(),

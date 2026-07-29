@@ -1,8 +1,18 @@
+/**
+ * Страница восстановления пароля (`/forgot-password`).
+ * Рендерит форму `ForgotPasswordForm` для отправки email со ссылкой
+ * для сброса пароля, на декоративном фоне с логотипом.
+ */
 "use client";
 
 import { ForgotPasswordForm } from "@/features/auth/ui/ForgotPasswordForm";
 import { KeyRound } from "lucide-react";
 
+/**
+ * Страница запроса сброса пароля.
+ *
+ * @returns JSX-разметка страницы восстановления пароля.
+ */
 export default function ForgotPasswordPage() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-background via-primary/5 to-brand/10 p-4">

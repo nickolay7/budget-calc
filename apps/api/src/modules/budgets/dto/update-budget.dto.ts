@@ -1,5 +1,9 @@
 import { IsOptional, IsString, IsNumber, IsDateString } from "class-validator";
 
+/**
+ * DTO для обновления бюджета.
+ * Все поля опциональны — обновляются только переданные значения.
+ */
 export class UpdateBudgetDto {
   @IsOptional()
   @IsString()

@@ -17,6 +17,21 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 
+/**
+ * Форма регистрации нового пользователя.
+ *
+ * Содержит поля name, email, password, confirmPassword.
+ * Валидация через createUserSchema, проверка совпадения паролей,
+ * анимация встряски при ошибках.
+ *
+ * Состояния рендеринга:
+ * - Ввод данных: форма с четырьмя полями.
+ * - Загрузка: spinner на кнопке, поля отключены.
+ * - Ошибка валидации: подсветка полей, баннер с сообщением, анимация shake.
+ * - Ошибка API: баннер с сообщением от сервера.
+ *
+ * @returns JSX-разметка формы регистрации.
+ */
 export function RegisterForm() {
   const router = useRouter();
   const register = useAuthStore((s) => s.register);
