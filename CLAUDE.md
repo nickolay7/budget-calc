@@ -2,7 +2,7 @@
 
 Monorepo expense tracker: Next.js 16 (frontend) + NestJS 11 (backend) + Prisma 6 (PostgreSQL).
 
-**Workspace-specific instructions** → `apps/web/CLAUDE.md` и `apps/api/CLAUDE.md`. Перед работой с воркспейсом начни с них.
+**Workspace-specific instructions** → `apps/web/CLAUDE.md` and `apps/api/CLAUDE.md`. Start with those before working in a workspace.
 
 ---
 
@@ -168,3 +168,10 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 - Wrap your end-of-turn summary in `<say>...</say>` tags.
 - Make the summary stand alone — no references to "this response".
 - Aim for one sentence. Omit if no useful audio summary.
+
+## Documentation
+
+- Update JSDoc after changing methods.
+- Add or update Swagger decorators for DTOs and controllers.
+- When adding new functionality, check `@apps/docs/*` for related files.
+- Keep docs updated when changing architecture or API.

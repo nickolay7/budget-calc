@@ -7,74 +7,62 @@ import {
   Body,
   Param,
 } from "@nestjs/common";
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
 import { AccountsService } from "./accounts.service";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
+import { AccountDto } from "./dto/account-response.dto";
+import { MessageResponseDto } from "../../common/dto/message-response.dto";
 
 /**
  * Контроллер счетов.
  * Предоставляет CRUD- endpoints для управления финансовыми счетами.
  * Все маршруты защищены JWT-аутентификацией.
  */
+@ApiTags("accounts")
+@ApiBearerAuth()
 @Controller("accounts")
 export class AccountsController {
-  /**
-   * @param accountsService - Сервис для работы со счетами
-   */
   constructor(private readonly accountsService: AccountsService) {}
 
-  /**
-   * Возвращает все счета текущего пользователя.
-   *
-   * @param userId - ID пользователя из JWT-токена
-   * @returns Массив счетов
-   */
   @Get()
+  @ApiOperation({ summary: "Get all accounts for the current user" })
+  @ApiResponse({ status: 200, description: "Accounts retrieved successfully", type: [AccountDto] })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   findAll(@CurrentUser("id") userId: string) {
     return this.accountsService.findAll(userId);
   }
 
-  /**
-   * Возвращает счет по ID.
-   *
-   * @param id - ID счета
-   * @returns Объект счета или null
-   */
   @Get(":id")
+  @ApiOperation({ summary: "Get an account by ID" })
+  @ApiParam({ name: "id", description: "Account ID", type: String })
+  @ApiResponse({ status: 200, description: "Account retrieved successfully", type: AccountDto })
+  @ApiResponse({ status: 404, description: "Account not found" })
   findOne(@Param("id") id: string) {
     return this.accountsService.findOne(id);
   }
 
-  /**
-   * Создаёт новый счёт (заглушка — TODO).
-   *
-   * @param userId - ID пользователя
-   * @param dto - Данные нового счёта
-   * @returns Сообщение о создании
-   */
   @Post()
+  @ApiOperation({ summary: "Create a new account" })
+  @ApiResponse({ status: 201, description: "Account created successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   create(@CurrentUser("id") userId: string, @Body() dto: unknown) {
     return this.accountsService.create(userId, dto);
   }
 
-  /**
-   * Обновляет существующий счёт (заглушка — TODO).
-   *
-   * @param id - ID счёта
-   * @param dto - Данные для обновления
-   * @returns Сообщение об обновлении
-   */
   @Patch(":id")
+  @ApiOperation({ summary: "Update an account by ID" })
+  @ApiParam({ name: "id", description: "Account ID", type: String })
+  @ApiResponse({ status: 200, description: "Account updated successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 404, description: "Account not found" })
   update(@Param("id") id: string, @Body() dto: unknown) {
     return this.accountsService.update(id, dto);
   }
 
-  /**
-   * Удаляет счёт по ID.
-   *
-   * @param id - ID счёта
-   * @returns Удалённый объект счёта
-   */
   @Delete(":id")
+  @ApiOperation({ summary: "Delete an account by ID" })
+  @ApiParam({ name: "id", description: "Account ID", type: String })
+  @ApiResponse({ status: 200, description: "Account deleted successfully", type: AccountDto })
+  @ApiResponse({ status: 404, description: "Account not found" })
   remove(@Param("id") id: string) {
     return this.accountsService.remove(id);
   }

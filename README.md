@@ -27,6 +27,7 @@ npm run dev
 
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:3001
+- API Docs (Swagger): http://localhost:3001/api/docs
 
 ## Documentation
 

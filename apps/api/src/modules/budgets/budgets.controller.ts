@@ -7,8 +7,12 @@ import {
   Body,
   Param,
 } from "@nestjs/common";
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
 import { BudgetsService } from "./budgets.service";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
+import { BudgetDto } from "./dto/budget-response.dto";
+import { BudgetProgressItemDto } from "./dto/budget-progress.dto";
+import { MessageResponseDto } from "../../common/dto/message-response.dto";
 
 /**
  * Контроллер бюджетов.
@@ -16,77 +20,59 @@ import { CurrentUser } from "../../common/decorators/current-user.decorator";
  * а также endpoint для получения прогресса по категориям.
  * Все маршруты защищены JWT-аутентификацией.
  */
+@ApiTags("budgets")
+@ApiBearerAuth()
 @Controller("budgets")
 export class BudgetsController {
-  /**
-   * @param budgetsService - Сервис для работы с бюджетами
-   */
   constructor(private readonly budgetsService: BudgetsService) {}
 
-  /**
-   * Возвращает все бюджеты текущего пользователя с включением категории.
-   *
-   * @param userId - ID пользователя из JWT-токена
-   * @returns Массив бюджетов
-   */
   @Get()
+  @ApiOperation({ summary: "Get all budgets for the current user" })
+  @ApiResponse({ status: 200, description: "Budgets retrieved successfully", type: [BudgetDto] })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   findAll(@CurrentUser("id") userId: string) {
     return this.budgetsService.findAll(userId);
   }
 
-  /**
-   * Возвращает прогресс по всем бюджетам (фактические расходы vs запланированные суммы).
-   *
-   * @param userId - ID пользователя из JWT-токена
-   * @returns Массив объектов с прогрессом по каждому бюджету
-   */
   @Get("progress")
+  @ApiOperation({ summary: "Get budget progress (actual vs planned)" })
+  @ApiResponse({ status: 200, description: "Progress retrieved successfully", type: [BudgetProgressItemDto] })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   getProgress(@CurrentUser("id") userId: string) {
     return this.budgetsService.getProgress(userId);
   }
 
-  /**
-   * Возвращает бюджет по ID.
-   *
-   * @param id - ID бюджета
-   * @returns Объект бюджета с категорией или null
-   */
   @Get(":id")
+  @ApiOperation({ summary: "Get a budget by ID" })
+  @ApiParam({ name: "id", description: "Budget ID", type: String })
+  @ApiResponse({ status: 200, description: "Budget retrieved successfully", type: BudgetDto })
+  @ApiResponse({ status: 404, description: "Budget not found" })
   findOne(@Param("id") id: string) {
     return this.budgetsService.findOne(id);
   }
 
-  /**
-   * Создаёт новый бюджет (заглушка — TODO).
-   *
-   * @param userId - ID пользователя
-   * @param dto - Данные нового бюджета
-   * @returns Сообщение о создании
-   */
   @Post()
+  @ApiOperation({ summary: "Create a new budget" })
+  @ApiResponse({ status: 201, description: "Budget created successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   create(@CurrentUser("id") userId: string, @Body() dto: unknown) {
     return this.budgetsService.create(userId, dto);
   }
 
-  /**
-   * Обновляет существующий бюджет (заглушка — TODO).
-   *
-   * @param id - ID бюджета
-   * @param dto - Данные для обновления
-   * @returns Сообщение об обновлении
-   */
   @Patch(":id")
+  @ApiOperation({ summary: "Update a budget by ID" })
+  @ApiParam({ name: "id", description: "Budget ID", type: String })
+  @ApiResponse({ status: 200, description: "Budget updated successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 404, description: "Budget not found" })
   update(@Param("id") id: string, @Body() dto: unknown) {
     return this.budgetsService.update(id, dto);
   }
 
-  /**
-   * Удаляет бюджет по ID.
-   *
-   * @param id - ID бюджета
-   * @returns Удалённый объект бюджета
-   */
   @Delete(":id")
+  @ApiOperation({ summary: "Delete a budget by ID" })
+  @ApiParam({ name: "id", description: "Budget ID", type: String })
+  @ApiResponse({ status: 200, description: "Budget deleted successfully", type: BudgetDto })
+  @ApiResponse({ status: 404, description: "Budget not found" })
   remove(@Param("id") id: string) {
     return this.budgetsService.remove(id);
   }
