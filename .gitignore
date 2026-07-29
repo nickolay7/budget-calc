@@ -53,3 +53,6 @@ packages/shared/src/**/*.d.ts.map
 # Claude Code (local config + runtime lock)
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
+
+# Local docs
+WORKING_TREE_TUT.md
