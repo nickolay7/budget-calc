@@ -25,7 +25,7 @@ export default function LoginPage() {
             className="absolute -left-20 -top-20 h-72 w-72 animate-float rounded-full"
             style={{
               background:
-                "oklch(0.6 0.2 310 / 0.3)",
+                "oklch(0.5 0.2 310 / 0.25)",
               filter: "blur(60px)",
             }}
           />
@@ -33,7 +33,7 @@ export default function LoginPage() {
             className="absolute -bottom-16 left-1/3 h-96 w-96 animate-float rounded-full"
             style={{
               background:
-                "oklch(0.5 0.18 250 / 0.25)",
+                "oklch(0.45 0.18 260 / 0.2)",
               filter: "blur(70px)",
               animationDelay: "1.5s",
             }}
@@ -42,7 +42,7 @@ export default function LoginPage() {
             className="absolute right-0 top-1/3 h-64 w-64 animate-float rounded-full"
             style={{
               background:
-                "oklch(0.7 0.15 45 / 0.15)",
+                "oklch(0.55 0.18 55 / 0.12)",
               filter: "blur(50px)",
               animationDelay: "3s",
             }}

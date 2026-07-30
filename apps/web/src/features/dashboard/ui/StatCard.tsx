@@ -47,7 +47,7 @@ export function StatCard({
 
   return (
     <Card
-      className="card-hover animate-slide-up"
+      className="card-hover animate-slide-up border-0 shadow-sm"
       style={{ animationDelay: `${delay}ms` }}
     >
       <CardHeader className="flex flex-row items-center justify-between pb-2">

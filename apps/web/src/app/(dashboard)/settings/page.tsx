@@ -88,7 +88,7 @@ export default function SettingsPage() {
         {sections.map((section) => {
           const Icon = section.icon;
           return (
-            <Card key={section.title} className="animate-slide-up">
+            <Card key={section.title} className="animate-slide-up border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
                   <div className="rounded-lg bg-primary/10 p-2 text-primary">

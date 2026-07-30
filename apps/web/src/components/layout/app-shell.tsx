@@ -41,19 +41,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <main className="flex flex-1 flex-col">
         {/* Page header */}
-        <header className="flex h-16 items-center justify-between border-b bg-background/80 px-6 backdrop-blur-sm">
+        <header className="flex h-16 items-center justify-between bg-white px-6 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="flex -space-x-1">
-              <span className="h-2 w-2 rounded-full bg-primary" />
-              <span className="h-2 w-2 rounded-full bg-brand" />
-              <span className="h-2 w-2 rounded-full bg-income" />
-            </div>
-            <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
+            <h1 className="text-lg font-semibold tracking-tight text-foreground">
+              {title}
+            </h1>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
               {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
+                weekday: "short",
                 month: "short",
                 day: "numeric",
               })}

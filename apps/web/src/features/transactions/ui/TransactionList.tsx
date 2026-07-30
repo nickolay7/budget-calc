@@ -139,7 +139,7 @@ export function TransactionList() {
   return (
     <div className="space-y-6">
       {/* ── Filters ── */}
-      <Card>
+      <Card className="border-0 shadow-sm">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-medium">Filter Transactions</CardTitle>
         </CardHeader>
@@ -199,7 +199,7 @@ export function TransactionList() {
 
       {/* ── Error state ── */}
       {error && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-8 text-center">
             <p className="text-sm text-destructive">{error}</p>
             <Button
@@ -223,7 +223,7 @@ export function TransactionList() {
 
       {/* ── Empty state ── */}
       {!isLoading && !error && transactions.length === 0 && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-4 rounded-full bg-muted p-4">
               <ArrowRightLeft className="h-8 w-8 text-muted-foreground/60" />

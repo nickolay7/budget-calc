@@ -61,7 +61,7 @@ export default function CategoriesPage() {
         {categoryColors.map((cat) => (
           <Card
             key={cat.name}
-            className="card-hover animate-slide-up overflow-hidden"
+            className="card-hover animate-slide-up overflow-hidden border-0 shadow-sm"
           >
             <div className={cn("h-1.5", cat.color)} />
             <CardHeader className="pb-2">
@@ -82,7 +82,7 @@ export default function CategoriesPage() {
 
       {/* ── Empty state (hidden when categories exist) ── */}
       {categoryColors.length === 0 && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-4 rounded-full bg-muted p-4">
               <Tags className="h-8 w-8 text-muted-foreground/60" />

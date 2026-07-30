@@ -14,7 +14,7 @@ export function DashboardSkeleton() {
         {Array.from({ length: 4 }).map((_, i) => (
           <Card
             key={i}
-            className="animate-slide-up"
+            className="animate-slide-up border-0 shadow-sm"
             style={{ animationDelay: `${i * 100}ms` }}
           >
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -29,7 +29,7 @@ export function DashboardSkeleton() {
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="animate-slide-up lg:col-span-2" style={{ animationDelay: "200ms" }}>
+        <Card className="animate-slide-up border-0 shadow-sm lg:col-span-2" style={{ animationDelay: "200ms" }}>
           <CardHeader>
             <Skeleton className="h-5 w-32" />
           </CardHeader>
@@ -48,7 +48,7 @@ export function DashboardSkeleton() {
             ))}
           </CardContent>
         </Card>
-        <Card className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+        <Card className="animate-slide-up border-0 shadow-sm" style={{ animationDelay: "300ms" }}>
           <CardHeader>
             <Skeleton className="h-5 w-28" />
           </CardHeader>

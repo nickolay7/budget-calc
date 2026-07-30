@@ -49,7 +49,7 @@ export function RecentTransactions({
   onRetry,
 }: RecentTransactionsProps) {
   return (
-    <Card className="animate-slide-up lg:col-span-2" style={{ animationDelay: "200ms" }}>
+    <Card className="animate-slide-up border-0 shadow-sm lg:col-span-2" style={{ animationDelay: "200ms" }}>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-base font-semibold">
           Recent Activity
@@ -106,16 +106,16 @@ export function RecentTransactions({
             </Button>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="divide-y divide-border/50">
             {transactions.map((tx) => (
               <div
                 key={tx.id}
-                className="flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors hover:bg-muted/50"
+                className="flex items-center justify-between rounded-lg px-3 py-3 transition-colors hover:bg-muted/30"
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-full",
+                      "flex h-9 w-9 items-center justify-center rounded-xl",
                       tx.type === "INCOME"
                         ? "bg-income/10 text-income"
                         : tx.type === "TRANSFER"
@@ -123,13 +123,13 @@ export function RecentTransactions({
                           : "bg-expense/10 text-expense",
                     )}
                   >
-                    <ArrowRightLeft className="h-3.5 w-3.5" />
+                    <ArrowRightLeft className="h-4 w-4" />
                   </div>
                   <div>
                     <p className="text-sm font-medium">
                       {tx.description ?? "Untitled"}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="mt-0.5 text-xs text-muted-foreground">
                       {tx.category?.name ?? tx.type} &middot;{" "}
                       {new Date(tx.date).toLocaleDateString("en-US", {
                         month: "short",

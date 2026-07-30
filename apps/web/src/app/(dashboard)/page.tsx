@@ -69,7 +69,7 @@ const quickActions = [
  */
 function QuickActionsCard() {
   return (
-    <Card className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+    <Card className="animate-slide-up border-0 shadow-sm" style={{ animationDelay: "300ms" }}>
       <CardHeader>
         <CardTitle className="text-base font-semibold">Quick Actions</CardTitle>
       </CardHeader>

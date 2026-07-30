@@ -61,7 +61,7 @@ export function ForgotPasswordForm() {
 
   if (sent) {
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-0 shadow-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Check Your Email</CardTitle>
           <CardDescription>
@@ -81,7 +81,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md border-0 shadow-sm">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Reset Password</CardTitle>
         <CardDescription>

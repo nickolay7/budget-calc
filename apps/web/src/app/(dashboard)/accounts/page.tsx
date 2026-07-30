@@ -134,7 +134,7 @@ export default function AccountsPage() {
             <Card
               key={account.name}
               className={cn(
-                "card-hover animate-slide-up relative overflow-hidden",
+                "card-hover animate-slide-up relative overflow-hidden border-0 shadow-sm",
               )}
               style={{ animationDelay: `${i * 100}ms` }}
             >
