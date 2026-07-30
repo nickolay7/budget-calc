@@ -18,12 +18,20 @@ argument-hint: <title> <base-branch, default main>
 
 ## Подготовка
 
-1. Проверь что ветка готова:
-   !`bash ${CLAUDE_SKILL_DIR}/scripts/validate.sh`
+1. Проверь что ветка готова — выполни:
+   ```bash
+   bash ${CLAUDE_SKILL_DIR}/scripts/validate.sh
+   ```
+   Если скрипт завершится с ошибкой — остановись и сообщи пользователю.
+
 2. Получи diff от базовой ветки:
-   !`git diff ${ARGUMENTS:-main}..HEAD`
+   ```bash
+   git diff ${ARGUMENTS:-main}..HEAD
+   ```
 3. Получи список коммитов:
-   !`git log ${ARGUMENTS:-main}..HEAD --oneline`
+   ```bash
+   git log ${ARGUMENTS:-main}..HEAD --oneline
+   ```
 
 ## Задача
 
@@ -34,10 +42,12 @@ argument-hint: <title> <base-branch, default main>
 ## Создание PR
 
 Создай PR командой:
+```bash
 gh pr create \
  --title "$0 или сгенерированный title" \
  --body "заполненный шаблон" \
  --base "${ARGUMENTS:-main}"
+```
 
 ## Правила
 
