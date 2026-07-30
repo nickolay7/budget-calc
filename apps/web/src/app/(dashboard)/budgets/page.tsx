@@ -95,7 +95,7 @@ export default function BudgetsPage() {
       </div>
 
       {/* ── Summary bar ── */}
-      <Card className="bg-gradient-to-br from-primary/5 via-primary/5 to-brand/5">
+      <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-brand/10 border-0 shadow-sm">
         <CardContent className="py-6">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6">
             <div>
@@ -130,7 +130,7 @@ export default function BudgetsPage() {
           return (
             <Card
               key={budget.name}
-              className="card-hover animate-slide-up overflow-hidden"
+              className="card-hover animate-slide-up overflow-hidden border-0 shadow-sm"
             >
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -197,7 +197,7 @@ export default function BudgetsPage() {
 
       {/* ── Empty state ── */}
       {budgets.length === 0 && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-4 rounded-full bg-muted p-4">
               <PiggyBank className="h-8 w-8 text-muted-foreground/60" />

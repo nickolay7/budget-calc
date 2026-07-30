@@ -31,7 +31,7 @@ export function BudgetProgressSection({
   if (budgets.length === 0) return null;
 
   return (
-    <Card className="animate-slide-up" style={{ animationDelay: "150ms" }}>
+    <Card className="animate-slide-up border-0 shadow-sm" style={{ animationDelay: "150ms" }}>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-base font-semibold">
           Budget Progress

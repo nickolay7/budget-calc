@@ -12,7 +12,7 @@ interface DashboardErrorProps {
 export function DashboardError({ error, onRetry }: DashboardErrorProps) {
   return (
     <div className="flex items-center justify-center py-20">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-0 shadow-sm">
         <CardContent className="flex flex-col items-center justify-center py-12 text-center">
           <div className="mb-4 rounded-full bg-destructive/10 p-3">
             <RefreshCw className="h-8 w-8 text-destructive" />

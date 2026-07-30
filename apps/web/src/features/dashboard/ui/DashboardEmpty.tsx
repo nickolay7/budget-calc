@@ -12,7 +12,7 @@ interface DashboardEmptyProps {
 export function DashboardEmpty({ onRefresh }: DashboardEmptyProps) {
   return (
     <div className="flex items-center justify-center py-12">
-      <Card className="w-full max-w-lg">
+      <Card className="w-full max-w-lg border-0 shadow-sm">
         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
           <div className="mb-4 rounded-full bg-brand/10 p-4">
             <LayoutDashboard className="h-10 w-10 text-brand" />

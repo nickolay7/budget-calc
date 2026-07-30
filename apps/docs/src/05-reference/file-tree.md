@@ -214,3 +214,33 @@ apps/web/src/
 ```
 node_modules/@nestjs/cqrs             ← NEW: ^11.0.3
 ```
+
+## Visual Redesign (Purple + Warm Beige Theme)
+
+### New Files (1 file)
+
+```
+apps/web/src/shared/ui/
+└── AuthBackground.tsx                 ← NEW: shared SVG background for auth pages (DRY)
+```
+
+### Modified Files (5 files)
+
+```
+apps/web/src/styles/
+└── globals.css                        ← MODIFIED: warm beige/cream palette, dark purple primary,
+                                          dark purple gradient sidebar, -sidebar variables removed
+
+apps/web/src/components/layout/
+├── app-shell.tsx                      ← MODIFIED: bg-white → bg-background (dark mode)
+└── sidebar.tsx                        ← MODIFIED: dark purple gradient, text-white/50 → text-white/70
+
+apps/web/src/app/(auth)/
+├── login/page.tsx                    ← MODIFIED: +AuthBackground component (SVG)
+├── register/page.tsx                 ← MODIFIED: inline SVG → AuthBackground component
+├── forgot-password/page.tsx          ← MODIFIED: inline SVG → AuthBackground component
+└── reset-password/page.tsx           ← MODIFIED: inline SVG → AuthBackground component
+
+apps/web/src/features/transactions/ui/
+└── TransactionList.tsx               ← MODIFIED: native date inputs → Input component
+```

@@ -139,7 +139,7 @@ export function TransactionList() {
   return (
     <div className="space-y-6">
       {/* ── Filters ── */}
-      <Card>
+      <Card className="border-0 shadow-sm">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-medium">Filter Transactions</CardTitle>
         </CardHeader>
@@ -163,7 +163,7 @@ export function TransactionList() {
                     setTypeFilter(e.target.value);
                     setPage(1);
                   }}
-                  className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <option value="">All types</option>
                   <option value="INCOME">Income</option>
@@ -171,24 +171,22 @@ export function TransactionList() {
                   <option value="TRANSFER">Transfer</option>
                 </select>
 
-                <input
+                <Input
                   type="date"
                   value={startDate}
                   onChange={(e) => {
                     setStartDate(e.target.value);
                     setPage(1);
                   }}
-                  className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   placeholder="Start date"
                 />
-                <input
+                <Input
                   type="date"
                   value={endDate}
                   onChange={(e) => {
                     setEndDate(e.target.value);
                     setPage(1);
                   }}
-                  className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   placeholder="End date"
                 />
               </div>
@@ -199,7 +197,7 @@ export function TransactionList() {
 
       {/* ── Error state ── */}
       {error && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-8 text-center">
             <p className="text-sm text-destructive">{error}</p>
             <Button
@@ -223,7 +221,7 @@ export function TransactionList() {
 
       {/* ── Empty state ── */}
       {!isLoading && !error && transactions.length === 0 && (
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="mb-4 rounded-full bg-muted p-4">
               <ArrowRightLeft className="h-8 w-8 text-muted-foreground/60" />
