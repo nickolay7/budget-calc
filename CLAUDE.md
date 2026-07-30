@@ -142,27 +142,6 @@ We follow [GitHub Flow](https://guides.github.com/introduction/flow/):
 
 The `<type>(<scope>):` line is the conventional-commit PR title (use comma-separated scopes if multiple: `feat(api,web):`). Add a blank line before the body.
 
-## Commit conventions
-
-Use [Conventional Commits](https://www.conventionalcommits.org/):
-
-| Type | When to use |
-|---|---|
-| `feat:` | New feature for the user or backend endpoint |
-| `fix:` | Bug fix |
-| `chore:` | Tooling, configs, dependencies, CI, project setup |
-| `docs:` | Documentation-only changes |
-| `refactor:` | Code change that neither fixes a bug nor adds a feature |
-| `style:` | Formatting, lint fixes (no logic change) |
-| `test:` | Adding or correcting tests |
-| `perf:` | Performance improvement |
-
-**Format**: `<type>[(scope)]: <short summary>`
-- Scope is optional — `api`, `web`, `shared`, `docs`, `docker`.
-- Summary starts lowercase, no period, imperative mood.
-- Separate body from subject with a blank line. Use body to explain *why*.
-- Footer `Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>` when Claude Code contributed.
-
 ## Voice Mode (voice-cc)
 
 - Wrap your end-of-turn summary in `<say>...</say>` tags.
