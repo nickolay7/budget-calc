@@ -41,7 +41,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <main className="flex flex-1 flex-col">
         {/* Page header */}
-        <header className="flex h-16 items-center justify-between bg-white px-6 shadow-sm">
+        <header className="flex h-16 items-center justify-between bg-background px-6 shadow-sm">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-semibold tracking-tight text-foreground">
               {title}

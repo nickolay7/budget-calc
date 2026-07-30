@@ -6,6 +6,7 @@
 "use client";
 
 import { LoginForm } from "@/features/auth/ui/LoginForm";
+import { AuthBackground } from "@/shared/ui/AuthBackground";
 import { Wallet } from "lucide-react";
 
 /**
@@ -19,8 +20,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       {/* ── Left: Visual anchor (hidden on mobile) ── */}
       <div className="relative hidden flex-1 flex-col items-center justify-center overflow-hidden bg-gradient-auth p-12 lg:flex">
-        {/* Animated blur circles */}
-        <div className="pointer-events-none absolute inset-0">
+        <AuthBackground gradientPrefix="login">
+          {/* Animated blur circles */}
+          <div className="absolute inset-0">
           <div
             className="absolute -left-20 -top-20 h-72 w-72 animate-float rounded-full"
             style={{
@@ -48,6 +50,7 @@ export default function LoginPage() {
             }}
           />
         </div>
+        </AuthBackground>
 
         {/* Brand content */}
         <div className="relative z-10 text-center">

@@ -22,7 +22,7 @@ Middleware (`middleware.ts`) protects all routes except public ones. Reads `budg
 ```
 src/
 ├── shared/          # (layer: shared) Reusable utilities
-│   ├── ui/         # shadcn/ui components (button, input, label, card)
+│   ├── ui/         # shadcn/ui components + AuthBackground (button, input, label, card, AuthBackground)
 │   └── api/        # api-client.ts — generic fetch + token storage
 ├── entities/        # (layer: entities) Business entities
 │   ├── auth/       # useAuthStore (Zustand)
@@ -92,6 +92,7 @@ Import shared types from `@budget-calc/shared` for type safety.
 ## UI components
 
 - shadcn/ui primitives in `shared/ui/` (Tailwind v4, oklch colors, cva variants).
+- `AuthBackground` in `shared/ui/AuthBackground.tsx` — shared SVG background for auth pages. Accepts `gradientPrefix` (unique ID per page) and `children` (animated blur circles overlay). Used by login, register, forgot-password, reset-password.
 - Domain-specific components in `features/<entity>/ui/`.
 
 ## Forms

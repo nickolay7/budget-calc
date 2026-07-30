@@ -108,7 +108,7 @@ export function Sidebar() {
               <p className="truncate text-sm font-medium text-white">
                 {user.name ?? "User"}
               </p>
-              <p className="truncate text-xs text-white/50">
+              <p className="truncate text-xs text-white/70">
                 {user.email}
               </p>
             </div>
