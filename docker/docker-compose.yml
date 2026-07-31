@@ -6,12 +6,21 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: budget_user
-      POSTGRES_PASSWORD: budget_pass
-      POSTGRES_DB: budget_calc
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-
+  dbhub:
+    image: bytebase/dbhub:latest
+    ports:
+      - "8080:8080"
+    command:
+      - "--transport=http"
+      - "--port=8080"
+      - "--dsn=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+    depends_on:
+      - postgres
 volumes:
   postgres_data:
