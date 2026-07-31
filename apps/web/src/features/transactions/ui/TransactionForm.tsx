@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   createTransactionSchema,
@@ -239,7 +240,7 @@ export function TransactionForm({
             back to add transactions.
           </p>
           <Button asChild variant="default">
-            <a href="/accounts">Go to Accounts</a>
+            <Link href="/accounts">Go to Accounts</Link>
           </Button>
         </CardContent>
       </Card>

@@ -1,0 +1,15 @@
+# Dependencies & build output
+node_modules/
+dist/
+.next/
+coverage/
+
+# Machine-generated files
+package-lock.json
+apps/web/next-env.d.ts
+*.tsbuildinfo
+*.prisma
+
+# IDE configs
+.idea/
+.vscode/

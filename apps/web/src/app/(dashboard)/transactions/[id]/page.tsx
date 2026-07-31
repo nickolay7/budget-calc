@@ -7,6 +7,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTransactionsStore } from "@/entities/transactions";
 import { TransactionDetail } from "@/features/transactions/ui/TransactionDetail";
@@ -76,7 +77,7 @@ export default function TransactionDetailPage() {
               Transaction not found.
             </p>
             <Button variant="outline" size="sm" className="mt-4" asChild>
-              <a href="/transactions">Back to Transactions</a>
+              <Link href="/transactions">Back to Transactions</Link>
             </Button>
           </CardContent>
         </Card>

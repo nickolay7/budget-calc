@@ -1,6 +1,7 @@
-module.exports = {
-  extends: ["./base"],
-  rules: {
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-  },
-};
+import base from "./base.js";
+
+/**
+ * ESLint-конфиг для NestJS (apps/api).
+ * Базовые правила TypeScript.
+ */
+export default [...base];
