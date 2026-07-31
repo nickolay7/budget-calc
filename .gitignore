@@ -56,3 +56,6 @@ packages/shared/src/**/*.d.ts.map
 
 # Local docs
 WORKING_TREE_TUT.md
+
+.playwright-mcp/
+screenshots/
