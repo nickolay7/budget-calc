@@ -13,7 +13,8 @@ import {
 } from "@budget-calc/shared";
 import { useTransactionsStore } from "@/entities/transactions";
 import { apiClient } from "@/shared/api/api-client";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { CategoryCreateInline } from "./CategoryCreateInline";
+import { Loader2, ArrowLeft, Plus } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
@@ -98,6 +99,13 @@ export function TransactionForm({
   const [fieldErrors, setFieldErrors] = useState<
     Record<string, string>
   >({});
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
+
+  const handleCategoryCreated = useCallback((category: Category) => {
+    setCategories((prev) => [...prev, category]);
+    setCategoryId(category.id);
+    setShowCreateCategory(false);
+  }, []);
 
   const isTransfer = type === "TRANSFER";
   const isEdit = mode === "edit";
@@ -400,12 +408,23 @@ export function TransactionForm({
 
           {/* Category */}
           <div className="space-y-1.5">
-            <Label
-              htmlFor="categoryId"
-              className="text-xs font-medium text-foreground/70"
-            >
-              Category
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="categoryId"
+                className="text-xs font-medium text-foreground/70"
+              >
+                Category
+              </Label>
+              <button
+                type="button"
+                onClick={() => setShowCreateCategory((v) => !v)}
+                disabled={isLoading}
+                className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline disabled:opacity-50"
+              >
+                <Plus className="h-3 w-3" />
+                New
+              </button>
+            </div>
             <select
               id="categoryId"
               value={categoryId}
@@ -420,6 +439,13 @@ export function TransactionForm({
                 </option>
               ))}
             </select>
+
+            {showCreateCategory && (
+              <CategoryCreateInline
+                onCreated={handleCategoryCreated}
+                onCancel={() => setShowCreateCategory(false)}
+              />
+            )}
           </div>
 
           {/* Destination Account (only for transfers) */}
