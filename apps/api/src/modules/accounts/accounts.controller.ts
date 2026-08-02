@@ -11,7 +11,8 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from "@ne
 import { AccountsService } from "./accounts.service";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
 import { AccountDto } from "./dto/account-response.dto";
-import { MessageResponseDto } from "../../common/dto/message-response.dto";
+import { CreateAccountDto } from "./dto/create-account.dto";
+import { UpdateAccountDto } from "./dto/update-account.dto";
 
 /**
  * Контроллер счетов.
@@ -43,18 +44,18 @@ export class AccountsController {
 
   @Post()
   @ApiOperation({ summary: "Create a new account" })
-  @ApiResponse({ status: 201, description: "Account created successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 201, description: "Account created successfully", type: AccountDto })
   @ApiResponse({ status: 401, description: "Unauthorized" })
-  create(@CurrentUser("id") userId: string, @Body() dto: unknown) {
+  create(@CurrentUser("id") userId: string, @Body() dto: CreateAccountDto) {
     return this.accountsService.create(userId, dto);
   }
 
   @Patch(":id")
   @ApiOperation({ summary: "Update an account by ID" })
   @ApiParam({ name: "id", description: "Account ID", type: String })
-  @ApiResponse({ status: 200, description: "Account updated successfully", type: MessageResponseDto })
+  @ApiResponse({ status: 200, description: "Account updated successfully", type: AccountDto })
   @ApiResponse({ status: 404, description: "Account not found" })
-  update(@Param("id") id: string, @Body() dto: unknown) {
+  update(@Param("id") id: string, @Body() dto: UpdateAccountDto) {
     return this.accountsService.update(id, dto);
   }
 

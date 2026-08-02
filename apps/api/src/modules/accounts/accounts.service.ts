@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
+import { CreateAccountDto } from "./dto/create-account.dto";
+import { UpdateAccountDto } from "./dto/update-account.dto";
 
 /**
  * Сервис для работы со счетами пользователя.
@@ -36,27 +38,38 @@ export class AccountsService {
   }
 
   /**
-   * Создаёт новый счёт (заглушка — TODO).
+   * Создаёт новый счёт для пользователя.
    *
-   * @param _userId - ID пользователя (не используется)
-   * @param _dto - Данные нового счёта (не используются)
-   * @returns Сообщение о создании
+   * Начальный баланс опционален (по умолчанию 0), валюта по умолчанию "USD"
+   * задаётся на уровне схемы Prisma.
+   *
+   * @param userId - ID пользователя-владельца
+   * @param dto - Данные нового счёта
+   * @returns Созданный счёт
    */
-  create(_userId: string, _dto: unknown) {
-    // TODO: implement
-    return { message: "created" };
+  create(userId: string, dto: CreateAccountDto) {
+    return this.prisma.account.create({
+      data: {
+        name: dto.name,
+        type: dto.type,
+        balance: dto.balance ?? 0,
+        userId,
+      },
+    });
   }
 
   /**
-   * Обновляет существующий счёт (заглушка — TODO).
+   * Обновляет счёт по ID.
    *
-   * @param _id - ID счёта (не используется)
-   * @param _dto - Данные для обновления (не используются)
-   * @returns Сообщение об обновлении
+   * @param id - ID счёта
+   * @param dto - Поля для обновления (все опциональны)
+   * @returns Обновлённый счёт
    */
-  update(_id: string, _dto: unknown) {
-    // TODO: implement
-    return { message: "updated" };
+  update(id: string, dto: UpdateAccountDto) {
+    return this.prisma.account.update({
+      where: { id },
+      data: dto,
+    });
   }
 
   /**
