@@ -1,67 +1,19 @@
 /**
  * Страница управления счетами (`/accounts`).
- * Отображает заголовок, общую сумму баланса (капитал),
- * и карточки каждого счёта с типом и остатком.
+ * Отображает заголовок с кнопкой создания нового счёта,
+ * общую сумму баланса (капитал) и список счетов `AccountList`.
  */
 "use client";
 
-import {
-  Wallet,
-  Plus,
-  CreditCard,
-  Building2,
-  Landmark,
-  Smartphone,
-  MoreHorizontal,
-} from "lucide-react";
+import { Wallet, Plus } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/shared/ui/card";
-import { cn } from "@/shared/lib/cn";
-
-const accounts = [
-  {
-    name: "Main Checking",
-    type: "Checking",
-    balance: 5840.0,
-    icon: Building2,
-    color: "text-brand",
-    bg: "bg-brand/10",
-    gradient: "from-brand/20 via-brand/5 to-transparent",
-  },
-  {
-    name: "Savings Account",
-    type: "Savings",
-    balance: 12400.0,
-    icon: Landmark,
-    color: "text-income",
-    bg: "bg-income/10",
-    gradient: "from-income/20 via-income/5 to-transparent",
-  },
-  {
-    name: "Travel Rewards",
-    type: "Credit Card",
-    balance: -1240.5,
-    icon: CreditCard,
-    color: "text-expense",
-    bg: "bg-expense/10",
-    gradient: "from-expense/20 via-expense/5 to-transparent",
-  },
-  {
-    name: "Cash Wallet",
-    type: "Cash",
-    balance: 320.75,
-    icon: Wallet,
-    color: "text-primary",
-    bg: "bg-primary/10",
-    gradient: "from-primary/20 via-primary/5 to-transparent",
-  },
-];
+import { useAccountsStore } from "@/entities/accounts";
+import { AccountList } from "@/features/accounts/ui/AccountList";
 
 /**
  * Форматирует число как валюту (USD).
@@ -78,14 +30,16 @@ function formatCurrency(amount: number) {
 
 /**
  * Страница со списком финансовых счетов пользователя.
- * Показывает общую сумму капитала и карточки каждого счёта
- * с названием, типом, остатком и иконкой.
+ * Показывает общую сумму капитала и карточки каждого счёта.
  *
  * @returns JSX-разметка страницы счетов.
  */
 export default function AccountsPage() {
+  const accounts = useAccountsStore((s) => s.accounts);
+  const isLoading = useAccountsStore((s) => s.isLoading);
+
   const totalBalance = accounts.reduce(
-    (sum, acc) => sum + acc.balance,
+    (sum, acc) => sum + Number(acc.balance),
     0,
   );
 
@@ -104,9 +58,11 @@ export default function AccountsPage() {
             Manage your bank accounts, cards, and wallets
           </p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4" />
-          Add Account
+        <Button asChild>
+          <Link href="/accounts/new">
+            <Plus className="h-4 w-4" />
+            Add Account
+          </Link>
         </Button>
       </div>
 
@@ -117,61 +73,16 @@ export default function AccountsPage() {
             Total Net Worth
           </p>
           <p className="mt-1 text-3xl font-bold tracking-tight">
-            {formatCurrency(totalBalance)}
+            {isLoading ? "—" : formatCurrency(totalBalance)}
           </p>
           <p className="mt-1 text-xs text-white/50">
-            Across {accounts.length} accounts
+            Across {accounts.length} {accounts.length === 1 ? "account" : "accounts"}
           </p>
         </CardContent>
       </Card>
 
       {/* ── Account Cards ── */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        {accounts.map((account, i) => {
-          const Icon = account.icon;
-          const isNegative = account.balance < 0;
-          return (
-            <Card
-              key={account.name}
-              className={cn(
-                "card-hover animate-slide-up relative overflow-hidden border-0 shadow-sm",
-              )}
-              style={{ animationDelay: `${i * 100}ms` }}
-            >
-              {/* Gradient overlay */}
-              <div
-                className={cn(
-                  "pointer-events-none absolute inset-0 bg-gradient-to-br",
-                  account.gradient,
-                )}
-              />
-              <CardHeader className="relative">
-                <div className="flex items-start justify-between">
-                  <div className={cn("rounded-lg p-2", account.bg)}>
-                    <Icon className={cn("h-5 w-5", account.color)} />
-                  </div>
-                  <Button variant="ghost" size="icon" className="h-7 w-7">
-                    <MoreHorizontal className="h-3.5 w-3.5 text-muted-foreground" />
-                  </Button>
-                </div>
-                <CardTitle className="mt-1 text-base">{account.name}</CardTitle>
-                <CardDescription>{account.type}</CardDescription>
-              </CardHeader>
-              <CardContent className="relative">
-                <p
-                  className={cn(
-                    "text-2xl font-bold tracking-tight",
-                    isNegative && "text-expense",
-                  )}
-                >
-                  {isNegative ? "-" : ""}
-                  {formatCurrency(Math.abs(account.balance))}
-                </p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      <AccountList />
     </div>
   );
 }
