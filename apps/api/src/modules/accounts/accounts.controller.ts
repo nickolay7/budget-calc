@@ -38,8 +38,8 @@ export class AccountsController {
   @ApiParam({ name: "id", description: "Account ID", type: String })
   @ApiResponse({ status: 200, description: "Account retrieved successfully", type: AccountDto })
   @ApiResponse({ status: 404, description: "Account not found" })
-  findOne(@Param("id") id: string) {
-    return this.accountsService.findOne(id);
+  findOne(@Param("id") id: string, @CurrentUser("id") userId: string) {
+    return this.accountsService.findOne(id, userId);
   }
 
   @Post()
@@ -55,8 +55,12 @@ export class AccountsController {
   @ApiParam({ name: "id", description: "Account ID", type: String })
   @ApiResponse({ status: 200, description: "Account updated successfully", type: AccountDto })
   @ApiResponse({ status: 404, description: "Account not found" })
-  update(@Param("id") id: string, @Body() dto: UpdateAccountDto) {
-    return this.accountsService.update(id, dto);
+  update(
+    @Param("id") id: string,
+    @CurrentUser("id") userId: string,
+    @Body() dto: UpdateAccountDto,
+  ) {
+    return this.accountsService.update(id, userId, dto);
   }
 
   @Delete(":id")
@@ -64,7 +68,7 @@ export class AccountsController {
   @ApiParam({ name: "id", description: "Account ID", type: String })
   @ApiResponse({ status: 200, description: "Account deleted successfully", type: AccountDto })
   @ApiResponse({ status: 404, description: "Account not found" })
-  remove(@Param("id") id: string) {
-    return this.accountsService.remove(id);
+  remove(@Param("id") id: string, @CurrentUser("id") userId: string) {
+    return this.accountsService.remove(id, userId);
   }
 }

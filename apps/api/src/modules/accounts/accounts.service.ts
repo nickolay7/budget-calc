@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateAccountDto } from "./dto/create-account.dto";
 import { UpdateAccountDto } from "./dto/update-account.dto";
@@ -28,13 +28,23 @@ export class AccountsService {
   }
 
   /**
-   * Возвращает счёт по его ID.
+   * Возвращает счёт по его ID с проверкой владения пользователем.
    *
    * @param id - ID счёта
-   * @returns Объект счёта или null, если не найден
+   * @param userId - ID пользователя для проверки владения
+   * @returns Объект счёта
+   * @throws NotFoundException если счёт не найден или не принадлежит пользователю
    */
-  findOne(id: string) {
-    return this.prisma.account.findUnique({ where: { id } });
+  async findOne(id: string, userId: string) {
+    const account = await this.prisma.account.findUnique({
+      where: { id },
+    });
+
+    if (!account || account.userId !== userId) {
+      throw new NotFoundException("Account not found");
+    }
+
+    return account;
   }
 
   /**
@@ -59,13 +69,23 @@ export class AccountsService {
   }
 
   /**
-   * Обновляет счёт по ID.
+   * Обновляет счёт по ID с проверкой владения пользователем.
    *
    * @param id - ID счёта
+   * @param userId - ID пользователя для проверки владения
    * @param dto - Поля для обновления (все опциональны)
    * @returns Обновлённый счёт
+   * @throws NotFoundException если счёт не найден или не принадлежит пользователю
    */
-  update(id: string, dto: UpdateAccountDto) {
+  async update(id: string, userId: string, dto: UpdateAccountDto) {
+    const account = await this.prisma.account.findUnique({
+      where: { id },
+    });
+
+    if (!account || account.userId !== userId) {
+      throw new NotFoundException("Account not found");
+    }
+
     return this.prisma.account.update({
       where: { id },
       data: dto,
@@ -73,12 +93,22 @@ export class AccountsService {
   }
 
   /**
-   * Удаляет счёт по ID.
+   * Удаляет счёт по ID с проверкой владения пользователем.
    *
    * @param id - ID счёта
+   * @param userId - ID пользователя для проверки владения
    * @returns Удалённый объект счёта
+   * @throws NotFoundException если счёт не найден или не принадлежит пользователю
    */
-  remove(id: string) {
+  async remove(id: string, userId: string) {
+    const account = await this.prisma.account.findUnique({
+      where: { id },
+    });
+
+    if (!account || account.userId !== userId) {
+      throw new NotFoundException("Account not found");
+    }
+
     return this.prisma.account.delete({ where: { id } });
   }
 }
